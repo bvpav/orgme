@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
 import { actuallyWorkingAuth } from "~/utils/clerk";
+import { PostForm } from "./components";
+
+export const dynamic = true;
 
 export default async function PostDetails({
   params,
@@ -14,6 +17,7 @@ export default async function PostDetails({
     .from(posts)
     .where(eq(posts.id, params.postId));
   if (!results.length) notFound();
+
   const post = results[0];
   const { userId } = actuallyWorkingAuth();
 
@@ -22,10 +26,16 @@ export default async function PostDetails({
   }
 
   return (
-    <div>
-      <h1>{post.title}</h1>
-      <img src={post.imageUrl} alt={post.title} />
-      <p>{post.description}</p>
-    </div>
+    <PostForm
+      post={{
+        id: post.id,
+        title: post.title,
+        imageUrl: post.imageUrl,
+        description: post.description,
+        visibility: post.visibility,
+        authorId: post.authorId,
+      }}
+      userId={userId}
+    />
   );
 }
