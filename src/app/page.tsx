@@ -12,21 +12,25 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {publicPosts.map((post) => (
-        <Link
-          key={post.id}
-          className="flex flex-col items-center justify-center"
-          href={`/i/${post.id}`}
-        >
-          <h1 className="text-4xl font-bold">{post.title}</h1>
-          <img
-            src={post.imageUrl}
-            alt={post.title}
-            className="h-auto w-full max-w-2xl"
-          />
-          <p className="text-xl">{post.description}</p>
-        </Link>
-      ))}
+      {publicPosts.length > 0 ? (
+        publicPosts.map((post) => (
+          <Link
+            key={post.id}
+            className="flex flex-col items-center justify-center"
+            href={`/i/${post.id}`}
+          >
+            <h1 className="text-4xl font-bold">{post.title}</h1>
+            <img
+              src={post.imageUrl}
+              alt={post.title}
+              className="h-auto w-full max-w-2xl"
+            />
+            <p className="text-xl">{post.description}</p>
+          </Link>
+        ))
+      ) : (
+        <h1 className="text-4xl font-bold">No posts yet</h1>
+      )}
     </main>
   );
 }
