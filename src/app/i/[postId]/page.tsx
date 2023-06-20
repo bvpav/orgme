@@ -5,8 +5,6 @@ import { posts } from "~/db/schema";
 import { actuallyWorkingAuth } from "~/utils/clerk";
 import { PostForm } from "./components";
 
-export const dynamic = true;
-
 export default async function PostDetails({
   params,
 }: {
