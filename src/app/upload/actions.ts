@@ -1,15 +1,23 @@
 "use server";
 
-import { InferModel } from "drizzle-orm";
+import { auth } from "@clerk/nextjs";
+import { nanoid } from "nanoid";
+import { redirect } from "next/navigation";
 import invariant from "tiny-invariant";
 import { utapi } from "uploadthing/server";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
 import { getOptString } from "~/utils/form-data";
-import { redirect } from "next/navigation";
-import { nanoid } from "nanoid";
+import { headers } from "next/headers";
 
 export async function createPost(data: FormData) {
+  const { userId } = auth();
+  if (!userId) throw new Error("Not logged in");
+
+  // console.log(headers());
+
+  // const userId = "TODO";
+
   const fileKey = getOptString(data, "fk");
   if (!fileKey) throw new Error("No file key");
   console.log("fileKey", fileKey);
@@ -22,14 +30,15 @@ export async function createPost(data: FormData) {
   invariant(images.length === 1, "Expected exactly one image");
   const imageUrl = images[0].url;
 
-  const id = nanoid(7); // TODO: generate uuid
+  const id = nanoid(7);
   const post = await db.insert(posts).values({
-    id, // TODO: generate uuid
+    id,
     title,
     description,
     imageUrl,
     imageFK: fileKey,
     visibility,
+    authorId: userId,
   });
   redirect(`/i/${id}`);
 }

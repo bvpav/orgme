@@ -17,6 +17,7 @@ export const posts = mysqlTable(
     // TODO: add unique constraint whenever drizzle supports it
     imageUrl: varchar("image_url", { length: 255 }).notNull(),
     imageFK: varchar("image_fk", { length: 255 }).notNull(),
+    authorId: varchar("author_id", { length: 255 }).notNull(),
     visibility: mysqlEnum("visibility", ["public", "private", "unlisted"])
       .notNull()
       .default("public"),
