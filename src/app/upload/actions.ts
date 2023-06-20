@@ -8,8 +8,6 @@ import { posts } from "~/db/schema";
 import { getOptString } from "~/utils/form-data";
 import { redirect } from "next/navigation";
 
-type T = InferModel<typeof posts, "insert">;
-
 export async function createPost(data: FormData) {
   const fileKey = getOptString(data, "fk");
   if (!fileKey) throw new Error("No file key");
