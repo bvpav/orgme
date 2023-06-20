@@ -12,7 +12,6 @@ const opts = new URLSearchParams([
 ]);
 
 const connectionString = `mysql://${user}:${password}@${host}/${database}?${opts}`;
-console.log(connectionString);
 
 export default {
   schema: "./src/db/schema.ts",
