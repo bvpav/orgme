@@ -27,6 +27,7 @@ export const posts = mysqlTable(
     updatedAt: datetime("updated_at")
       .notNull()
       .default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+    // TODO: add deletedAt and use that
   },
   (table) => ({
     imageUrlIndex: uniqueIndex("image_url_index").on(table.imageUrl),
