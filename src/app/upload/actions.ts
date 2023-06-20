@@ -7,6 +7,7 @@ import { db } from "~/db";
 import { posts } from "~/db/schema";
 import { getOptString } from "~/utils/form-data";
 import { redirect } from "next/navigation";
+import { nanoid } from "nanoid";
 
 export async function createPost(data: FormData) {
   const fileKey = getOptString(data, "fk");
@@ -21,7 +22,7 @@ export async function createPost(data: FormData) {
   invariant(images.length === 1, "Expected exactly one image");
   const imageUrl = images[0].url;
 
-  const id = "foo"; // TODO: generate uuid
+  const id = nanoid(7); // TODO: generate uuid
   const post = await db.insert(posts).values({
     id, // TODO: generate uuid
     title,
