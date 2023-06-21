@@ -1,26 +1,14 @@
+import { clerkClient, type User } from "@clerk/nextjs/api";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
 import { actuallyWorkingAuth } from "~/utils/clerk";
+import { asyncComponent } from "~/utils/hacks";
 import { PostForm } from "./components";
-import { clerkClient } from "@clerk/nextjs/api";
+import { UserButtonById } from "~/components/user";
 
 export const dynamic = "force-dynamic";
-
-const AuthorCard = async ({ authorId }: { authorId: string }) => {
-  const user = await clerkClient.users.getUser(authorId);
-  return (
-    <div className="flex items-center gap-3 font-semibold">
-      <img
-        className="w-10 rounded-full"
-        src={user.profileImageUrl}
-        alt={user.username || "user profile image"}
-      />{" "}
-      {user.username}
-    </div>
-  );
-};
 
 export default async function PostDetails({
   params,
@@ -50,10 +38,7 @@ export default async function PostDetails({
         visibility: post.visibility,
         authorId: post.authorId,
       }}
-      authorComponent={
-        // @ts-expect-error async component
-        <AuthorCard authorId={post.authorId} />
-      }
+      authorComponent={<UserButtonById userId={post.authorId} />}
       userId={userId}
     />
   );

@@ -2,6 +2,9 @@ import { desc, eq } from "drizzle-orm";
 import Link from "next/link";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
+import { clerkClient } from "@clerk/nextjs/api";
+import invariant from "tiny-invariant";
+import { UserButton } from "~/components/user";
 
 export default async function Home() {
   const publicPosts = await db
@@ -9,6 +12,22 @@ export default async function Home() {
     .from(posts)
     .where(eq(posts.visibility, "public"))
     .orderBy(desc(posts.createdAt));
+  const usersPromise = clerkClient.users
+    .getUserList({
+      userId: publicPosts.map((post) => post.authorId),
+    })
+    .then((users) =>
+      users.reduce((acc, user) => {
+        acc.set(user.id, user);
+        return acc;
+      }, new Map<string, (typeof users)[number]>())
+    );
+  const getUser = async (userId: string) => {
+    const users = await usersPromise;
+    const user = users.get(userId);
+    invariant(user, "User not found");
+    return user;
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -25,6 +44,7 @@ export default async function Home() {
               alt={post.title}
               className="h-auto w-full max-w-2xl"
             />
+            <UserButton userResponse={getUser(post.authorId)} />
             <p className="text-xl">{post.description}</p>
           </Link>
         ))
