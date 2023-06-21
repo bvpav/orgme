@@ -11,7 +11,8 @@ type Post = Pick<
 export const PostForm: React.FC<{
   post: Post;
   userId: string | null;
-}> = ({ post, userId }) => {
+  authorComponent: React.ReactNode;
+}> = ({ post, userId, authorComponent }) => {
   const isAuthor = post.authorId === userId;
 
   return (
@@ -31,6 +32,7 @@ export const PostForm: React.FC<{
           <h1>{post.title}</h1>
         )}
         <img src={post.imageUrl} alt={post.title} className="max-w-lg" />
+        {authorComponent}
         {isAuthor ? (
           <p>
             <textarea
