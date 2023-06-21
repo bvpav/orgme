@@ -12,6 +12,8 @@ import invariant from "tiny-invariant";
 
 import { UploadButton, UploadDropzone } from "~/utils/uploadthing";
 import { createPost } from "./actions";
+import Image from "next/image";
+import { ImageRectangle } from "~/components/image";
 
 const AutoTextarea: React.FC<TextareaHTMLAttributes<HTMLTextAreaElement>> = (
   props
@@ -41,7 +43,10 @@ const AutoTextarea: React.FC<TextareaHTMLAttributes<HTMLTextAreaElement>> = (
 };
 
 export default function Home() {
-  const [file, setFile] = useState<{ url: string; key: string } | null>(null);
+  const [file, setFile] = useState<{ url: string; key: string } | null>({
+    url: "https://uploadthing-prod.s3.us-west-2.amazonaws.com/5ad66b9d-d0bd-4760-929d-932e9dc09bf2_imgur-logo-transparent-1525419802.png",
+    key: "5ad66b9d-d0bd-4760-929d-932e9dc09bf2_imgur-logo-transparent-1525419802.png",
+  });
 
   return (
     <main className="grid w-screen place-content-center">
@@ -80,9 +85,7 @@ export default function Home() {
               placeholder="Add a title..."
             />
             <div className="flex flex-col shadow-sm">
-              <div className="grid min-h-[350px] w-full place-content-center overflow-clip rounded-t-md bg-black">
-                <img src={file.url} />
-              </div>
+              <ImageRectangle url={file.url} />
               <AutoTextarea
                 className="w-full resize-none rounded-b-md border border-none bg-slate-700 px-4 py-2 text-lg outline-none"
                 name="description"

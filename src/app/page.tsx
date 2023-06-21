@@ -5,6 +5,9 @@ import { posts } from "~/db/schema";
 import { clerkClient } from "@clerk/nextjs/api";
 import invariant from "tiny-invariant";
 import { UserButton } from "~/components/user";
+import { ImageRectangle } from "~/components/image";
+
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const publicPosts = await db
@@ -39,11 +42,7 @@ export default async function Home() {
             href={`/i/${post.id}`}
           >
             <h1 className="text-4xl font-bold">{post.title}</h1>
-            <img
-              src={post.imageUrl}
-              alt={post.title}
-              className="h-auto w-full max-w-2xl"
-            />
+            <ImageRectangle url={post.imageUrl} />
             <UserButton userResponse={getUser(post.authorId)} />
             <p className="text-xl">{post.description}</p>
           </Link>

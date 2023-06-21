@@ -29,10 +29,10 @@ export default function RootLayout({
         <body
           className={classnames(
             inter.className,
-            "min-h-screen bg-gradient-to-b from-purple-900 via-blue-950 to-emerald-800 bg-no-repeat"
+            "min-h-screen bg-gradient-to-b from-purple-950 via-blue-950 to-emerald-950 bg-no-repeat"
           )}
         >
-          <header className="flex items-center justify-between px-5 py-3">
+          <header className="mb-4 flex items-center justify-between px-5 py-3">
             <div className="flex items-center gap-5">
               <Link
                 className="text-xl font-extrabold transition-transform hover:scale-105"
@@ -49,7 +49,6 @@ export default function RootLayout({
               </Link>
             </div>
 
-            {/* Account button */}
             <SignedIn>
               <UserButton />
             </SignedIn>
