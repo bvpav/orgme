@@ -42,7 +42,7 @@ export default function RootLayout({
               </Link>
               <Link
                 href="/upload"
-                className="flex items-center space-x-2 rounded-md bg-emerald-500 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                className="flex items-center space-x-2 rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
               >
                 <TbUpload />
                 <span>Upload</span>
