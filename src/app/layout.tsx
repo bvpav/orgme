@@ -8,6 +8,8 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import Link from "next/link";
+import classnames from "classnames";
+import { TbUpload } from "react-icons/tb";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,32 +26,28 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
-          <header className="flex justify-between px-3 py-2">
-            {/* Upload button */}
-            <Link
-              href="/upload"
-              className="flex items-center space-x-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              <svg
-                className="h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+        <body
+          className={classnames(
+            inter.className,
+            "min-h-screen bg-gradient-to-b from-purple-900 via-blue-950 to-emerald-800 bg-no-repeat"
+          )}
+        >
+          <header className="flex items-center justify-between px-5 py-3">
+            <div className="flex items-center gap-5">
+              <Link
+                className="text-xl font-extrabold transition-transform hover:scale-105"
+                href="/"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M10 12a2 2 0 100-4 2 2 0 000 4z"
-                  clipRule="evenodd"
-                />
-                <path
-                  fillRule="evenodd"
-                  d="M10 3a7 7 0 100 14 7 7 0 000-14zM3 10a7 7 0 1114 0 7 7 0 01-14 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>Upload</span>
-            </Link>
+                OrgMe
+              </Link>
+              <Link
+                href="/upload"
+                className="flex items-center space-x-2 rounded-md bg-emerald-500 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+              >
+                <TbUpload />
+                <span>Upload</span>
+              </Link>
+            </div>
 
             {/* Account button */}
             <SignedIn>
