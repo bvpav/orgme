@@ -4,10 +4,19 @@ import { InferModel } from "drizzle-orm";
 import { deletePost, updatePost } from "./actions";
 import { ImageRectangle } from "~/components/image";
 import { getPostTitle } from "~/utils/posts";
+// TODO: manage to format this away w/ prettier
+import { formatDate } from "../../../utils/chrono";
+import { TbDots, TbEyeOff, TbGlobe, TbLock, TbWorld } from "react-icons/tb";
 
 type Post = Pick<
   InferModel<typeof import("~/db/schema").posts>,
-  "id" | "title" | "imageUrl" | "description" | "visibility" | "authorId"
+  | "id"
+  | "title"
+  | "imageUrl"
+  | "description"
+  | "visibility"
+  | "authorId"
+  | "createdAt"
 >;
 
 export const PostForm: React.FC<{
@@ -18,27 +27,46 @@ export const PostForm: React.FC<{
   const isAuthor = post.authorId === userId;
 
   return (
-    <div>
-      <form action={updatePost}>
+    <main className="flex flex-col items-center justify-center">
+      <form className="flex max-w-xl flex-col gap-3" action={updatePost}>
         <input type="hidden" name="postId" value={post.id} />
-        {isAuthor ? (
-          <h1>
-            <input
-              className="text-black"
-              name="title"
-              placeholder="Add title..."
-              defaultValue={post.title}
-            />
-          </h1>
-        ) : (
-          <h1>{post.title}</h1>
-        )}
-        <ImageRectangle
-          url={post.imageUrl}
-          alt={getPostTitle(post.title)}
-          menu={"TODO"}
-        />
-        {authorComponent}
+        <h1>
+          <input
+            className="w-full border-none bg-transparent text-2xl font-bold placeholder-gray-400/50 outline-none placeholder:italic"
+            name="title"
+            placeholder={isAuthor ? "Add a title..." : undefined}
+            defaultValue={post.title}
+            disabled={!isAuthor}
+          />
+        </h1>
+        <p className="flex gap-2 text-sm font-light">
+          <span>{`Uploaded ${formatDate(post.createdAt)}`}</span>
+          {"•"}
+          {post.visibility === "public" ? (
+            <span className="flex items-center gap-1">
+              <TbWorld /> Public
+            </span>
+          ) : post.visibility === "private" ? (
+            <span className="flex items-center gap-1">
+              <TbLock /> Private
+            </span>
+          ) : (
+            <span className="flex items-center gap-1">
+              <TbEyeOff /> Unlisted
+            </span>
+          )}
+        </p>
+        <div className="my-4 overflow-clip rounded-md">
+          <ImageRectangle
+            url={post.imageUrl}
+            alt={getPostTitle(post.title)}
+            menu={"TODO"}
+          />
+        </div>
+        <div className="mb-5 flex w-full items-center justify-between">
+          {authorComponent}
+          <TbDots className="cursor-pointer text-2xl" />
+        </div>
         {isAuthor ? (
           <p>
             <textarea
@@ -49,9 +77,9 @@ export const PostForm: React.FC<{
             />
           </p>
         ) : (
-          <p>{post.description}</p>
+          <p className="whitespace-pre-wrap">{post.description}</p>
         )}
-        {isAuthor ? (
+        {isAuthor && (
           <p>
             <select
               name="visibility"
@@ -63,9 +91,6 @@ export const PostForm: React.FC<{
               <option value="unlisted">Unlisted</option>
             </select>
           </p>
-        ) : (
-          // XXX: pointless
-          <p>{post.visibility}</p>
         )}
         {isAuthor && (
           <button
@@ -84,6 +109,6 @@ export const PostForm: React.FC<{
           </button>
         </form>
       )}
-    </div>
+    </main>
   );
 };

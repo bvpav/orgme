@@ -43,10 +43,7 @@ const AutoTextarea: React.FC<TextareaHTMLAttributes<HTMLTextAreaElement>> = (
 };
 
 export default function Home() {
-  const [file, setFile] = useState<{ url: string; key: string } | null>({
-    url: "https://uploadthing-prod.s3.us-west-2.amazonaws.com/5ad66b9d-d0bd-4760-929d-932e9dc09bf2_imgur-logo-transparent-1525419802.png",
-    key: "5ad66b9d-d0bd-4760-929d-932e9dc09bf2_imgur-logo-transparent-1525419802.png",
-  });
+  const [file, setFile] = useState<{ url: string; key: string } | null>(null);
 
   return (
     <main className="grid w-screen place-content-center">

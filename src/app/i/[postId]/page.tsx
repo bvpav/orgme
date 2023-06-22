@@ -35,6 +35,7 @@ export default async function PostDetails({
         description: post.description,
         visibility: post.visibility,
         authorId: post.authorId,
+        createdAt: post.createdAt,
       }}
       authorComponent={<UserButtonById userId={post.authorId} />}
       userId={userId}
