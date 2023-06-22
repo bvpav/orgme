@@ -35,10 +35,13 @@ export default function RootLayout({
           <header className="mb-4 flex items-center justify-between px-5 py-3">
             <div className="flex items-center gap-5">
               <Link
-                className="text-xl font-extrabold transition-transform hover:scale-105"
+                className="relative text-xl font-extrabold transition-transform hover:scale-105"
                 href="/"
               >
                 OrgMe
+                <span className="absolute bottom-0 right-0 -z-10 translate-x-3 translate-y-1 select-none text-xs">
+                  🥺
+                </span>
               </Link>
               <Link
                 href="/upload"
