@@ -42,7 +42,12 @@ export default async function Home() {
             href={`/i/${post.id}`}
           >
             <h1 className="text-4xl font-bold">{post.title}</h1>
-            <ImageRectangle url={post.imageUrl} />
+            <ImageRectangle
+              url={post.imageUrl}
+              zoomable={false}
+              alt={"TODO"}
+              menu={"TODO"}
+            />
             <UserButton userResponse={getUser(post.authorId)} />
             <p className="text-xl">{post.description}</p>
           </Link>

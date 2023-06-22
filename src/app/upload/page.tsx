@@ -85,7 +85,7 @@ export default function Home() {
               placeholder="Add a title..."
             />
             <div className="flex flex-col shadow-sm">
-              <ImageRectangle url={file.url} />
+              <ImageRectangle url={file.url} alt="the image to be uploaded" />
               <AutoTextarea
                 className="w-full resize-none rounded-b-md border border-none bg-slate-700 px-4 py-2 text-lg outline-none"
                 name="description"

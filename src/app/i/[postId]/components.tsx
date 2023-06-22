@@ -32,7 +32,7 @@ export const PostForm: React.FC<{
         ) : (
           <h1>{post.title}</h1>
         )}
-        <ImageRectangle url={post.imageUrl} />
+        <ImageRectangle url={post.imageUrl} alt={"TODO"} menu={"TODO"} />
         {authorComponent}
         {isAuthor ? (
           <p>
