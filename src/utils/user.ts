@@ -18,7 +18,7 @@ export function getClerkUserId(publicUserId: string) {
 
 export function getUserDisplayName(user: User) {
   return (
-    [user.firstName, user.lastName].join(" ") ||
+    [user.firstName, user.lastName].filter(Boolean).join(" ") ||
     user.username ||
     "User " + getPublicUserId(user.id)
   );
