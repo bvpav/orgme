@@ -4,7 +4,7 @@ import { db } from "~/db";
 import { posts } from "~/db/schema";
 import { clerkClient } from "@clerk/nextjs/api";
 import invariant from "tiny-invariant";
-import { UserButton } from "~/components/user";
+import { UserLink } from "~/components/user";
 import { ImageRectangle } from "~/components/image";
 import { getPostTitle } from "~/utils/post";
 
@@ -49,7 +49,7 @@ export default async function Home() {
               alt={getPostTitle(post.title)}
               menu={"TODO"}
             />
-            <UserButton userResponse={getUser(post.authorId)} />
+            <UserLink userResponse={getUser(post.authorId)} />
             <p className="text-xl">{post.description}</p>
           </Link>
         ))

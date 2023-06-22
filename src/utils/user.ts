@@ -1,7 +1,8 @@
 import { User } from "@clerk/nextjs/api";
 
 export function getPublicUserId(clerkUserId: string) {
-  const urlsafeB64 = btoa(clerkUserId)
+  const reversed = clerkUserId.split("").reverse().join("");
+  const urlsafeB64 = btoa(reversed)
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=/g, "");
@@ -13,7 +14,8 @@ export function getClerkUserId(publicUserId: string) {
     .replace(/-/g, "+")
     .replace(/_/g, "/")
     .padEnd(publicUserId.length + ((4 - (publicUserId.length % 4)) % 4), "=");
-  return atob(b64);
+  const reversed = atob(b64);
+  return reversed.split("").reverse().join("");
 }
 
 export function getUserDisplayName(user: User) {
