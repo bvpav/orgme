@@ -3,7 +3,7 @@
 import { InferModel } from "drizzle-orm";
 import { deletePost, updatePost } from "./actions";
 import { ImageRectangle } from "~/components/image";
-import { getPostTitle } from "~/utils/posts";
+import { getPostTitle } from "~/utils/post";
 // TODO: manage to format this away w/ prettier
 import { formatDate } from "../../../utils/chrono";
 import { TbDots, TbEyeOff, TbGlobe, TbLock, TbWorld } from "react-icons/tb";

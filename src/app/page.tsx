@@ -6,7 +6,7 @@ import { clerkClient } from "@clerk/nextjs/api";
 import invariant from "tiny-invariant";
 import { UserButton } from "~/components/user";
 import { ImageRectangle } from "~/components/image";
-import { getPostTitle } from "~/utils/posts";
+import { getPostTitle } from "~/utils/post";
 
 export const dynamic = "force-dynamic";
 

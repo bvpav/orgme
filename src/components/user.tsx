@@ -1,6 +1,6 @@
 import { clerkClient, type User } from "@clerk/nextjs/api";
 import { asyncComponent } from "~/utils/hacks";
-import { getUserDisplayName } from "~/utils/users";
+import { getUserDisplayName } from "~/utils/user";
 
 export const UserButton = asyncComponent(
   async ({ userResponse }: { userResponse: User | Promise<User> }) => {
