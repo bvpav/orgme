@@ -13,34 +13,7 @@ import invariant from "tiny-invariant";
 import { UploadButton, UploadDropzone } from "~/utils/uploadthing";
 import { createPost } from "./actions";
 import Image from "next/image";
-import { ImageRectangle } from "~/components/image";
-
-const AutoTextarea: React.FC<TextareaHTMLAttributes<HTMLTextAreaElement>> = (
-  props
-) => {
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const [value, setValue] = useState(props.defaultValue ?? "");
-
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(event.target.value);
-    if (props.onChange) props.onChange(event);
-  };
-
-  useLayoutEffect(() => {
-    if (!textAreaRef.current) return;
-    textAreaRef.current.style.height = "inherit";
-    textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
-  }, [value]);
-
-  return (
-    <textarea
-      {...props}
-      value={value}
-      onChange={handleChange}
-      ref={textAreaRef}
-    />
-  );
-};
+import { ImageDescriptionInput, ImageRectangle } from "~/components/image";
 
 export default function Home() {
   const [file, setFile] = useState<{ url: string; key: string } | null>(null);
@@ -83,12 +56,7 @@ export default function Home() {
             />
             <div className="flex flex-col shadow-sm">
               <ImageRectangle url={file.url} alt="the image to be uploaded" />
-              <AutoTextarea
-                className="w-full resize-none rounded-b-md border border-none bg-slate-700 px-4 py-2 text-lg outline-none"
-                name="description"
-                placeholder="Add a description..."
-                maxLength={500}
-              />
+              <ImageDescriptionInput name="description" />
             </div>
           </fieldset>
           <div className="flex-2 flex flex-col gap-4 md:flex-col-reverse md:gap-8">

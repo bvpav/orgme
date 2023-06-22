@@ -2,7 +2,7 @@
 
 import { InferModel } from "drizzle-orm";
 import { deletePost, updatePost } from "./actions";
-import { ImageRectangle } from "~/components/image";
+import { ImageDescriptionInput, ImageRectangle } from "~/components/image";
 import { getPostTitle } from "~/utils/post";
 // TODO: manage to format this away w/ prettier
 import { formatDate } from "../../../utils/chrono";
@@ -62,23 +62,18 @@ export const PostForm: React.FC<{
             alt={getPostTitle(post.title)}
             menu={"TODO"}
           />
+          {isAuthor && (
+            <ImageDescriptionInput
+              name="description"
+              defaultValue={post.description}
+            />
+          )}
         </div>
         <div className="mb-5 flex w-full items-center justify-between">
           {authorComponent}
           <TbDots className="cursor-pointer text-2xl" />
         </div>
-        {isAuthor ? (
-          <p>
-            <textarea
-              className="text-black"
-              name="description"
-              placeholder="Add description..."
-              defaultValue={post.description}
-            />
-          </p>
-        ) : (
-          <p className="whitespace-pre-wrap">{post.description}</p>
-        )}
+        {!isAuthor && <p className="whitespace-pre-wrap">{post.description}</p>}
         {isAuthor && (
           <p>
             <select

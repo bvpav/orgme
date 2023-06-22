@@ -1,4 +1,3 @@
-"use client";
 export function formatDate(createdAt: Date) {
   const now = new Date();
 
