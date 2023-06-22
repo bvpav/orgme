@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
-import { actuallyWorkingAuth } from "~/utils/clerk";
+import { actuallyWorkingAuth } from "~/utils/hacks";
 import { getOptString } from "~/utils/form-data";
 
 export async function updatePost(data: FormData) {

@@ -6,7 +6,7 @@ import invariant from "tiny-invariant";
 import { utapi } from "uploadthing/server";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
-import { actuallyWorkingAuth } from "~/utils/clerk";
+import { actuallyWorkingAuth } from "~/utils/hacks";
 import { getOptString } from "~/utils/form-data";
 
 export async function createPost(data: FormData) {

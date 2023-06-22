@@ -1,12 +1,10 @@
-import { clerkClient, type User } from "@clerk/nextjs/api";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
+import { UserButtonById } from "~/components/user";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
-import { actuallyWorkingAuth } from "~/utils/clerk";
-import { asyncComponent } from "~/utils/hacks";
+import { actuallyWorkingAuth } from "~/utils/hacks";
 import { PostForm } from "./components";
-import { UserButtonById } from "~/components/user";
 
 export const dynamic = "force-dynamic";
 
