@@ -57,6 +57,20 @@ export default function RootLayout({
             </SignedOut>
           </header>
           {children}
+          <footer className="mb-3 mt-7 grid place-items-center">
+            <p className="text-md font-light">
+              This is an{" "}
+              <Link
+                className="underline transition-transform hover:scale-105 hover:font-medium hover:underline-offset-2"
+                rel="noopener noreferrer"
+                target="_blank"
+                href="https://github.com/bvpav/orgme"
+              >
+                Imgur clone
+              </Link>
+              .
+            </p>
+          </footer>
         </body>
       </html>
     </ClerkProvider>
