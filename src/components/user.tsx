@@ -1,5 +1,6 @@
 import { clerkClient, type User } from "@clerk/nextjs/api";
 import { asyncComponent } from "~/utils/hacks";
+import { getUserDisplayName } from "~/utils/users";
 
 export const UserButton = asyncComponent(
   async ({ userResponse }: { userResponse: User | Promise<User> }) => {
@@ -27,7 +28,7 @@ export const UserButtonById = asyncComponent(
           src={user.profileImageUrl}
           alt={user.username || "user profile image"}
         />{" "}
-        {user.username}
+        {getUserDisplayName(user)}
       </div>
     );
   }
