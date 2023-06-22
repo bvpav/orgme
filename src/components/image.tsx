@@ -27,7 +27,7 @@ export const ImageRectangle: React.FC<{
         {menu !== undefined && (
           <button
             type="button"
-            className="absolute right-0 top-0 mr-3 mt-3 hidden aspect-square place-items-center rounded bg-black/30 text-2xl group-hover:grid"
+            className="absolute right-0 top-0 mr-3 mt-3 hidden aspect-square place-items-center rounded bg-black/30 text-2xl transition-transform active:scale-95 group-hover:grid"
           >
             <TbDots />
           </button>

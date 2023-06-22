@@ -71,7 +71,7 @@ export const PostForm: React.FC<{
         </div>
         <div className="mb-5 flex w-full items-center justify-between">
           {authorComponent}
-          <TbDots className="cursor-pointer text-2xl" />
+          <TbDots className="cursor-pointer text-2xl transition-transform active:scale-95" />
         </div>
         {!isAuthor && <p className="whitespace-pre-wrap">{post.description}</p>}
         {isAuthor && (
