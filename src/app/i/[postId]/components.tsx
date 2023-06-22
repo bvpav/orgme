@@ -3,6 +3,7 @@
 import { InferModel } from "drizzle-orm";
 import { deletePost, updatePost } from "./actions";
 import { ImageRectangle } from "~/components/image";
+import { getPostTitle } from "~/utils/posts";
 
 type Post = Pick<
   InferModel<typeof import("~/db/schema").posts>,
@@ -32,7 +33,11 @@ export const PostForm: React.FC<{
         ) : (
           <h1>{post.title}</h1>
         )}
-        <ImageRectangle url={post.imageUrl} alt={"TODO"} menu={"TODO"} />
+        <ImageRectangle
+          url={post.imageUrl}
+          alt={getPostTitle(post.title)}
+          menu={"TODO"}
+        />
         {authorComponent}
         {isAuthor ? (
           <p>

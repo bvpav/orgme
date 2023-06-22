@@ -6,6 +6,7 @@ import { clerkClient } from "@clerk/nextjs/api";
 import invariant from "tiny-invariant";
 import { UserButton } from "~/components/user";
 import { ImageRectangle } from "~/components/image";
+import { getPostTitle } from "~/utils/posts";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +46,7 @@ export default async function Home() {
             <ImageRectangle
               url={post.imageUrl}
               zoomable={false}
-              alt={"TODO"}
+              alt={getPostTitle(post.title)}
               menu={"TODO"}
             />
             <UserButton userResponse={getUser(post.authorId)} />
