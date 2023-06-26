@@ -37,21 +37,22 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       {publicPosts.length > 0 ? (
         publicPosts.map((post) => (
-          <Link
+          <article
             key={post.id}
             className="flex flex-col items-center justify-center"
-            href={`/i/${post.id}`}
           >
-            <h1 className="text-4xl font-bold">{post.title}</h1>
-            <ImageRectangle
-              url={post.imageUrl}
-              zoomable={false}
-              alt={getPostTitle(post.title)}
-              menu={"TODO"}
-            />
+            <Link href={`/i/${post.id}`}>
+              <h1 className="text-4xl font-bold">{post.title}</h1>
+              <ImageRectangle
+                url={post.imageUrl}
+                zoomable={false}
+                alt={getPostTitle(post.title)}
+                menu={"TODO"}
+              />
+            </Link>
             <UserLink userResponse={getUser(post.authorId)} />
             <p className="text-xl">{post.description}</p>
-          </Link>
+          </article>
         ))
       ) : (
         <h1 className="text-4xl font-bold">No posts yet</h1>
