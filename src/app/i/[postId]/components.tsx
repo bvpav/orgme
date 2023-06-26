@@ -27,7 +27,7 @@ export const PostForm: React.FC<{
   const isAuthor = post.authorId === userId;
 
   return (
-    <main className="flex flex-col items-center justify-center">
+    <main className="flex flex-col items-center justify-center px-3">
       <form className="flex max-w-xl flex-col gap-3" action={updatePost}>
         <input type="hidden" name="postId" value={post.id} />
         <h1>
