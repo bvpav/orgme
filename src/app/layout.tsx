@@ -64,7 +64,7 @@ export default function RootLayout({
             <p className="text-md font-light">
               This is an{" "}
               <Link
-                className="underline transition-transform hover:scale-105 hover:font-medium hover:underline-offset-2"
+                className="underline decoration-dashed transition-transform hover:scale-105 hover:font-medium hover:underline-offset-2"
                 rel="noopener noreferrer"
                 target="_blank"
                 href="https://github.com/bvpav/orgme"
