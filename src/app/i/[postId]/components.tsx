@@ -1,12 +1,12 @@
 "use client";
 
 import { InferModel } from "drizzle-orm";
-import { deletePost, updatePost } from "./actions";
 import { ImageDescriptionInput, ImageRectangle } from "~/components/image";
 import { getPostTitle } from "~/utils/post";
+import { updatePost } from "./actions";
 // TODO: manage to format this away w/ prettier
+import { TbDots, TbEyeOff, TbLock, TbWorld } from "react-icons/tb";
 import { formatDate } from "../../../utils/chrono";
-import { TbDots, TbEyeOff, TbGlobe, TbLock, TbWorld } from "react-icons/tb";
 
 type Post = Pick<
   InferModel<typeof import("~/db/schema").posts>,
@@ -75,35 +75,43 @@ export const PostForm: React.FC<{
         </div>
         {!isAuthor && <p className="whitespace-pre-wrap">{post.description}</p>}
         {isAuthor && (
-          <p>
-            <select
-              name="visibility"
-              defaultValue={post.visibility}
-              className="rounded border border-gray-300 bg-white px-4 py-2 pr-8 text-black focus:border-blue-500 focus:outline-none"
-            >
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-              <option value="unlisted">Unlisted</option>
-            </select>
-          </p>
+          <fieldset className="mb-4 flex flex-col gap-3 border-y border-white/20 py-5">
+            <p className="text-xl font-semibold">Change visibility</p>
+            <p>
+              <select
+                name="visibility"
+                defaultValue={post.visibility}
+                className="cursor-pointer rounded bg-white/10 px-4 py-2 pr-8 focus:border-white focus:outline-none"
+              >
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+                <option value="unlisted">Unlisted</option>
+              </select>
+            </p>
+          </fieldset>
         )}
         {isAuthor && (
-          <button
-            type="submit"
-            className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-          >
-            Save changes
-          </button>
+          <div className="flex justify-end gap-3">
+            <button
+              type="submit"
+              className="rounded-md bg-white/10 px-4 py-2 font-semibold text-white transition-colors hover:bg-white/20"
+            >
+              Save changes
+            </button>
+            <button className="rounded-md bg-red-500 px-4 py-2 font-bold text-white transition-colors hover:bg-red-700">
+              Delete post
+            </button>
+          </div>
         )}
       </form>
-      {isAuthor && (
+      {/* {isAuthor && (
         <form action={deletePost}>
           <input type="hidden" name="postId" value={post.id} />
           <button className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700">
             Delete post
           </button>
         </form>
-      )}
+      )} */}
     </main>
   );
 };
