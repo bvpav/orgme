@@ -3,10 +3,13 @@
 import { InferModel } from "drizzle-orm";
 import { ImageDescriptionInput, ImageRectangle } from "~/components/image";
 import { getPostTitle } from "~/utils/post";
-import { updatePost } from "./actions";
+import { deletePost, updatePost } from "./actions";
 // TODO: manage to format this away w/ prettier
-import { TbDots, TbEyeOff, TbLock, TbWorld } from "react-icons/tb";
+import { TbDots, TbEyeOff, TbLock, TbPencil, TbWorld } from "react-icons/tb";
 import { formatDate } from "../../../utils/chrono";
+import React, { HTMLProps, useLayoutEffect, useRef, useState } from "react";
+import { title } from "process";
+import classNames from "classnames";
 
 type Post = Pick<
   InferModel<typeof import("~/db/schema").posts>,
@@ -19,6 +22,52 @@ type Post = Pick<
   | "createdAt"
 >;
 
+// const AutoInput: React.FC<HTMLProps<HTMLInputElement>> = (props) => {
+//   const inputRef = useRef<HTMLInputElement>(null);
+//   const [value, setValue] = useState(props.defaultValue);
+
+//   return (
+//     <input
+//       ref={inputRef}
+//       {...props}
+//       value={value}
+//       onChange={(e) => setValue(e.target.value)}
+//     />
+//   );
+// };
+
+const AutoInput = React.forwardRef<
+  HTMLInputElement,
+  HTMLProps<HTMLInputElement> & { onFirstUpdate?: () => void }
+>((props, ref) => {
+  const [value, setValue] = useState(props.defaultValue);
+  const [firstUpdate, setFirstUpdate] = useState(true);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    if (props.onChange) props.onChange(event);
+  };
+
+  useLayoutEffect(() => {
+    if (!ref || !("current" in ref) || !ref.current) return;
+    // ref.current.style.height = "0";
+    // ref.current.style.height = `${ref.current.scrollHeight}px`;
+    if (value) {
+      ref.current.style.width = "0";
+      ref.current.style.width = `min(${ref.current.scrollWidth}px, 100%)`;
+      if (props.onFirstUpdate && firstUpdate) {
+        setFirstUpdate(false);
+        props.onFirstUpdate();
+      }
+    } else {
+      ref.current.style.width = "";
+    }
+  }, [value, props, firstUpdate, setFirstUpdate, ref]);
+
+  return <input ref={ref} {...props} value={value} onChange={handleChange} />;
+});
+AutoInput.displayName = "AutoInput";
+
 export const PostForm: React.FC<{
   post: Post;
   userId: string | null;
@@ -26,18 +75,49 @@ export const PostForm: React.FC<{
 }> = ({ post, userId, authorComponent }) => {
   const isAuthor = post.authorId === userId;
 
+  const titleInputRef = useRef<HTMLInputElement>(null);
+  // FIXME: because we can't know how wide the text field is going to be outside of
+  // the browser, we're defaulting to hiding the edit button until the proper
+  // width is calculated, so we can prevent it from jumping around
+  const [showEdit, setShowEdit] = useState(false);
+
+  // HACK: this is a hack to prevent the edit button from showing up when the input is empty
+  const shouldShowEdit = showEdit && titleInputRef.current?.value;
+
   return (
     <main className="flex flex-col items-center justify-center px-3">
       <form className="flex max-w-xl flex-col gap-3" action={updatePost}>
         <input type="hidden" name="postId" value={post.id} />
-        <h1>
-          <input
-            className="w-full border-none bg-transparent text-2xl font-bold placeholder-gray-400/50 outline-none placeholder:italic"
+        <h1 className="flex w-full items-center gap-3 text-2xl">
+          <AutoInput
+            ref={titleInputRef}
+            className="max-w-full border-none bg-transparent font-bold placeholder-gray-400/50 outline-none placeholder:italic"
+            id="title"
             name="title"
             placeholder={isAuthor ? "Add a title..." : undefined}
             defaultValue={post.title}
             disabled={!isAuthor}
+            onFocus={() => setShowEdit(false)}
+            onBlur={() => setShowEdit(true)}
+            onFirstUpdate={() =>
+              setShowEdit(document.activeElement !== titleInputRef.current)
+            }
           />
+          {isAuthor && (
+            <label
+              role="button"
+              htmlFor={shouldShowEdit ? "title" : undefined}
+              className={classNames(
+                "text-2xl transition-transform active:scale-95",
+                {
+                  "opacity-0": !shouldShowEdit,
+                  "cursor-pointer": shouldShowEdit,
+                }
+              )}
+            >
+              <TbPencil />
+            </label>
+          )}
         </h1>
         <p className="flex gap-2 text-sm font-light">
           <span>{`Uploaded ${formatDate(post.createdAt)}`}</span>
@@ -104,14 +184,11 @@ export const PostForm: React.FC<{
           </div>
         )}
       </form>
-      {/* {isAuthor && (
-        <form action={deletePost}>
+      {isAuthor && (
+        <form action={deletePost} name="delete-form">
           <input type="hidden" name="postId" value={post.id} />
-          <button className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700">
-            Delete post
-          </button>
         </form>
-      )} */}
+      )}
     </main>
   );
 };
