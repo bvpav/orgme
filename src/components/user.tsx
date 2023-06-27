@@ -8,7 +8,7 @@ export const UserLink = asyncComponent(
     const user = await userResponse;
     return (
       <Link
-        href={`/users/${getPublicUserId(user.id)}`}
+        href={`/user/${getPublicUserId(user.id)}`}
         className="flex items-center gap-3 font-semibold"
       >
         <img
