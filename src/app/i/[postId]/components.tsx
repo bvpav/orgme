@@ -178,8 +178,11 @@ export const PostForm: React.FC<{
             >
               Save changes
             </button>
-            <button className="rounded-md bg-red-500 px-4 py-2 font-bold text-white transition-colors hover:bg-red-700">
-              Delete post
+            <button
+              form="delete-form"
+              className="rounded-md bg-red-500 px-4 py-2 font-bold text-white transition-colors hover:bg-red-700"
+            >
+              Delete image
             </button>
           </div>
         )}
