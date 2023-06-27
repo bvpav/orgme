@@ -11,6 +11,12 @@ import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
+async function getPost(postId: string) {
+  const results = await db.select().from(posts).where(eq(posts.id, postId));
+  if (!results.length) return null;
+  return results[0];
+}
+
 const PrivatePage = () => (
   <main className="grid w-full place-items-center px-3">
     <div className="flex w-full max-w-md flex-col items-center justify-center gap-8 rounded-md bg-white/10 py-8">
@@ -36,13 +42,9 @@ export default async function PostDetails({
 }: {
   params: { postId: string };
 }) {
-  const results = await db
-    .select()
-    .from(posts)
-    .where(eq(posts.id, params.postId));
-  if (!results.length) notFound();
+  const post = await getPost(params.postId);
+  if (!post) notFound();
 
-  const post = results[0];
   const { userId } = actuallyWorkingAuth();
 
   if (post.visibility === "private" && post.authorId !== userId) {
