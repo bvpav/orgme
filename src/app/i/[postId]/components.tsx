@@ -22,20 +22,6 @@ type Post = Pick<
   | "createdAt"
 >;
 
-// const AutoInput: React.FC<HTMLProps<HTMLInputElement>> = (props) => {
-//   const inputRef = useRef<HTMLInputElement>(null);
-//   const [value, setValue] = useState(props.defaultValue);
-
-//   return (
-//     <input
-//       ref={inputRef}
-//       {...props}
-//       value={value}
-//       onChange={(e) => setValue(e.target.value)}
-//     />
-//   );
-// };
-
 const AutoInput = React.forwardRef<
   HTMLInputElement,
   HTMLProps<HTMLInputElement> & { onFirstUpdate?: () => void }
@@ -50,8 +36,6 @@ const AutoInput = React.forwardRef<
 
   useLayoutEffect(() => {
     if (!ref || !("current" in ref) || !ref.current) return;
-    // ref.current.style.height = "0";
-    // ref.current.style.height = `${ref.current.scrollHeight}px`;
     if (value) {
       ref.current.style.width = "0";
       ref.current.style.width = `min(${ref.current.scrollWidth}px, 100%)`;
@@ -122,19 +106,21 @@ export const PostForm: React.FC<{
         <p className="flex gap-2 text-sm font-light">
           <span>{`Uploaded ${formatDate(post.createdAt)}`}</span>
           {"•"}
-          {post.visibility === "public" ? (
-            <span className="flex items-center gap-1">
-              <TbWorld /> Public
-            </span>
-          ) : post.visibility === "private" ? (
-            <span className="flex items-center gap-1">
-              <TbLock /> Private
-            </span>
-          ) : (
-            <span className="flex items-center gap-1">
-              <TbEyeOff /> Unlisted
-            </span>
-          )}
+          <span className="flex items-center gap-1">
+            {post.visibility === "public" ? (
+              <>
+                <TbWorld /> Public
+              </>
+            ) : post.visibility === "private" ? (
+              <>
+                <TbLock /> Private
+              </>
+            ) : (
+              <>
+                <TbEyeOff /> Unlisted
+              </>
+            )}
+          </span>
         </p>
         <div className="my-4 overflow-clip rounded-md">
           <ImageRectangle

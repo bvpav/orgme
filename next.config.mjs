@@ -13,6 +13,18 @@ const nextConfig = {
         port: "",
         pathname: "/*",
       },
+      {
+        protocol: "https",
+        hostname: "images.clerk.dev",
+        port: "",
+        pathname: "/oauth_google/*",
+      },
+      {
+        protocol: "https",
+        hostname: "images.clerk.dev",
+        port: "",
+        pathname: "/oauth_github/*",
+      },
     ],
   },
 };
