@@ -43,15 +43,19 @@ export const ImageRectangle: React.FC<{
   );
 };
 
-const AutoTextarea: React.FC<TextareaHTMLAttributes<HTMLTextAreaElement>> = (
-  props
-) => {
+const AutoTextarea: React.FC<TextareaHTMLAttributes<HTMLTextAreaElement>> = ({
+  defaultValue,
+  // FIXME: ignoring this stuff for now
+  value: _value,
+  onChange: _onChange,
+  ...props
+}) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const [value, setValue] = useState(props.defaultValue ?? "");
+  const [value, setValue] = useState(defaultValue ?? "");
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(event.target.value);
-    if (props.onChange) props.onChange(event);
+    // if (onChange) onChange(event);
   };
 
   useLayoutEffect(() => {

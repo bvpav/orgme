@@ -25,31 +25,42 @@ type Post = Pick<
 const AutoInput = React.forwardRef<
   HTMLInputElement,
   HTMLProps<HTMLInputElement> & { onFirstUpdate?: () => void }
->((props, ref) => {
-  const [value, setValue] = useState(props.defaultValue);
-  const [firstUpdate, setFirstUpdate] = useState(true);
+>(
+  (
+    {
+      defaultValue,
+      onFirstUpdate,
+      value: _value,
+      onChange: _onChange,
+      ...props
+    },
+    ref
+  ) => {
+    const [value, setValue] = useState(defaultValue);
+    const [firstUpdate, setFirstUpdate] = useState(true);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    if (props.onChange) props.onChange(event);
-  };
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValue(event.target.value);
+      // if (onChange) onChange(event);
+    };
 
-  useLayoutEffect(() => {
-    if (!ref || !("current" in ref) || !ref.current) return;
-    if (value) {
-      ref.current.style.width = "0";
-      ref.current.style.width = `min(${ref.current.scrollWidth}px, 100%)`;
-      if (props.onFirstUpdate && firstUpdate) {
-        setFirstUpdate(false);
-        props.onFirstUpdate();
+    useLayoutEffect(() => {
+      if (!ref || !("current" in ref) || !ref.current) return;
+      if (value) {
+        ref.current.style.width = "0";
+        ref.current.style.width = `min(${ref.current.scrollWidth}px, 100%)`;
+        if (onFirstUpdate && firstUpdate) {
+          setFirstUpdate(false);
+          onFirstUpdate();
+        }
+      } else {
+        ref.current.style.width = "";
       }
-    } else {
-      ref.current.style.width = "";
-    }
-  }, [value, props, firstUpdate, setFirstUpdate, ref]);
+    }, [value, onFirstUpdate, firstUpdate, setFirstUpdate, ref]);
 
-  return <input ref={ref} {...props} value={value} onChange={handleChange} />;
-});
+    return <input ref={ref} {...props} value={value} onChange={handleChange} />;
+  }
+);
 AutoInput.displayName = "AutoInput";
 
 export const PostForm: React.FC<{
