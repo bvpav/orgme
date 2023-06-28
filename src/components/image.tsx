@@ -1,6 +1,6 @@
 "use client";
 
-import classNames from "classnames";
+import clsx from "clsx";
 import {
   TextareaHTMLAttributes,
   useLayoutEffect,
@@ -19,7 +19,7 @@ export const ImageRectangle: React.FC<{
     <div className="relative flex h-full min-h-[350px] w-full items-center overflow-clip rounded-t-md bg-black/30 object-cover">
       <img src={url} alt={alt} className="w-full" />
       <div
-        className={classNames(
+        className={clsx(
           "group absolute top-0 h-full w-full bg-gradient-to-b from-black/60 via-transparent to-transparent opacity-0 transition-opacity hover:opacity-100",
           zoomable ? "cursor-zoom-in" : "cursor-pointer"
         )}

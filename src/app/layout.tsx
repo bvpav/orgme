@@ -1,5 +1,3 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
 import {
   ClerkProvider,
   SignInButton,
@@ -7,9 +5,11 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import clsx from "clsx";
+import { Inter } from "next/font/google";
 import Link from "next/link";
-import classnames from "classnames";
 import { TbUpload } from "react-icons/tb";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +27,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={classnames(
+          className={clsx(
             inter.className,
             "min-h-screen bg-gradient-to-b from-purple-950 via-blue-950 to-emerald-950 bg-no-repeat text-white"
           )}

@@ -9,7 +9,7 @@ import { TbDots, TbEyeOff, TbLock, TbPencil, TbWorld } from "react-icons/tb";
 import { formatDate } from "../../../utils/chrono";
 import React, { HTMLProps, useLayoutEffect, useRef, useState } from "react";
 import { title } from "process";
-import classNames from "classnames";
+import clsx from "clsx";
 
 type Post = Pick<
   InferModel<typeof import("~/db/schema").posts>,
@@ -91,13 +91,10 @@ export const PostForm: React.FC<{
             <label
               role="button"
               htmlFor={shouldShowEdit ? "title" : undefined}
-              className={classNames(
-                "text-2xl transition-transform active:scale-95",
-                {
-                  "opacity-0": !shouldShowEdit,
-                  "cursor-pointer": shouldShowEdit,
-                }
-              )}
+              className={clsx("text-2xl transition-transform active:scale-95", {
+                "opacity-0": !shouldShowEdit,
+                "cursor-pointer": shouldShowEdit,
+              })}
             >
               <TbPencil />
             </label>
