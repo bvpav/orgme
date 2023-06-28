@@ -8,6 +8,7 @@ import { db } from "~/db";
 import { posts } from "~/db/schema";
 import { getPostTitle } from "~/utils/post";
 import { getClerkUserId, getUserDisplayName } from "~/utils/user";
+import Image from "next/image";
 
 export default async function UserPage({
   params,
@@ -27,11 +28,9 @@ export default async function UserPage({
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <img
-        className="w-full max-w-xs rounded-full"
-        src={user.profileImageUrl}
-        alt={getUserDisplayName(user)}
-      />
+      <div className="relative aspect-square w-full max-w-xs overflow-clip rounded-full">
+        <Image fill src={user.profileImageUrl} alt={getUserDisplayName(user)} />
+      </div>
       <h1 className="text-4xl font-bold">{getUserDisplayName(user)}</h1>
       {userPosts.length > 0 ? (
         <div className="grid grid-cols-3 gap-4">
