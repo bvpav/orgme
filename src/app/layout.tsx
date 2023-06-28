@@ -29,7 +29,7 @@ export default function RootLayout({
         <body
           className={classnames(
             inter.className,
-            "min-h-screen bg-gradient-to-b from-purple-950 via-blue-950 to-emerald-950 bg-no-repeat"
+            "min-h-screen bg-gradient-to-b from-purple-950 via-blue-950 to-emerald-950 bg-no-repeat text-white"
           )}
         >
           <header className="mb-4 flex items-center justify-between px-5 py-3">
