@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { asyncComponent } from "~/utils/hacks";
 import { getPublicUserId, getUserDisplayName } from "~/utils/user";
+import { Button } from "./ui/button";
 
 export const UserLink = asyncComponent(
   async ({ userResponse }: { userResponse: User | Promise<User> }) => {

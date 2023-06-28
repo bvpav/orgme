@@ -10,6 +10,7 @@ import { formatDate } from "../../../utils/chrono";
 import React, { HTMLProps, useLayoutEffect, useRef, useState } from "react";
 import { title } from "process";
 import clsx from "clsx";
+import { Button } from "~/components/ui/button";
 
 type Post = Pick<
   InferModel<typeof import("~/db/schema").posts>,
@@ -166,18 +167,12 @@ export const PostForm: React.FC<{
         )}
         {isAuthor && (
           <div className="flex justify-end gap-3">
-            <button
-              type="submit"
-              className="rounded-md bg-white/10 px-4 py-2 font-semibold text-white transition-colors hover:bg-white/20"
-            >
+            <Button variant="secondary" type="submit">
               Save changes
-            </button>
-            <button
-              form="delete-form"
-              className="rounded-md bg-red-500 px-4 py-2 font-bold text-white transition-colors hover:bg-red-700"
-            >
+            </Button>
+            <Button variant="destructive" form="delete-form">
               Delete image
-            </button>
+            </Button>
           </div>
         )}
       </form>

@@ -1,19 +1,13 @@
 "use client";
 
-// You need to import our styles for the button to look right. Best to import in the root /layout.tsx but this is fine
 import "@uploadthing/react/styles.css";
-import {
-  TextareaHTMLAttributes,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { useState } from "react";
 import invariant from "tiny-invariant";
 
-import { UploadButton, UploadDropzone } from "~/utils/uploadthing";
-import { createPost } from "./actions";
-import Image from "next/image";
 import { ImageDescriptionInput, ImageRectangle } from "~/components/image";
+import { Button } from "~/components/ui/button";
+import { UploadDropzone } from "~/utils/uploadthing";
+import { createPost } from "./actions";
 
 export default function Home() {
   const [file, setFile] = useState<{ url: string; key: string } | null>(null);
@@ -67,9 +61,7 @@ export default function Home() {
             <fieldset className="flex flex-col gap-1">
               <h2 className="text-lg font-semibold">Upload</h2>
               <p>visibility here...</p>
-              <button className="flex items-center space-x-2 rounded-md bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2">
-                Upload public
-              </button>
+              <Button size="lg">Upload public</Button>
             </fieldset>
           </div>
         </form>

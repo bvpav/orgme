@@ -10,6 +10,7 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import { TbUpload } from "react-icons/tb";
 import "./globals.css";
+import { Button } from "~/components/ui/button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,13 +44,16 @@ export default function RootLayout({
                   🥺
                 </span>
               </Link>
-              <Link
-                href="/upload"
-                className="flex items-center space-x-2 rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
+              <Button
+                asChild
+                variant="default"
+                size="sm"
+                className="flex items-center gap-2"
               >
-                <TbUpload />
-                <span>Upload</span>
-              </Link>
+                <Link href="/upload">
+                  <TbUpload /> Upload
+                </Link>
+              </Button>
             </div>
 
             <SignedIn>
