@@ -1,6 +1,7 @@
 import {
   ClerkProvider,
   SignInButton,
+  SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
@@ -57,10 +58,30 @@ export default function RootLayout({
             </div>
 
             <SignedIn>
-              <UserButton />
+              <div className="flex items-center gap-2">
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="hidden sm:inline-flex"
+                >
+                  <Link href="/user">My images</Link>
+                </Button>
+                <UserButton />
+              </div>
             </SignedIn>
             <SignedOut>
-              <SignInButton />
+              <div className="flex gap-2">
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="hidden sm:inline-flex"
+                >
+                  <SignUpButton />
+                </Button>
+                <Button asChild variant="secondary">
+                  <SignInButton />
+                </Button>
+              </div>
             </SignedOut>
           </header>
           {children}
