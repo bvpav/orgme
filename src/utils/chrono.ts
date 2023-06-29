@@ -21,8 +21,12 @@ export function formatDate(createdAt: Date) {
     return "yesterday";
   } else if (diff < DAY * 7) {
     return `${Math.floor(diff / DAY)} days ago`;
+  } else if (diff < DAY * 14) {
+    return "last week";
   } else if (diff < DAY * 30) {
     return `${Math.floor(diff / (DAY * 7))} weeks ago`;
+  } else if (diff < DAY * 60) {
+    return "last month";
   } else if (diff < DAY * 365) {
     return `${Math.floor(diff / (DAY * 30))} months ago`;
   } else {
