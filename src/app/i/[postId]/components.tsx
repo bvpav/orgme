@@ -11,6 +11,15 @@ import React, { HTMLProps, useLayoutEffect, useRef, useState } from "react";
 import { title } from "process";
 import clsx from "clsx";
 import { Button } from "~/components/ui/button";
+import {
+  Select,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+} from "~/components/ui/select";
+import { Eye, Globe } from "lucide-react";
+import { Direction } from "@radix-ui/react-select";
 
 type Post = Pick<
   InferModel<typeof import("~/db/schema").posts>,
@@ -63,6 +72,50 @@ const AutoInput = React.forwardRef<
   }
 );
 AutoInput.displayName = "AutoInput";
+
+// FIXME: maybe move elsewhere??
+export const VisibilitySelect: React.FC<{
+  children?: React.ReactNode;
+  value?: Post["visibility"];
+  defaultValue?: Post["visibility"];
+  onValueChange?(value: Post["visibility"]): void;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?(open: boolean): void;
+  dir?: Direction;
+  name?: string;
+  autoComplete?: string;
+  disabled?: boolean;
+  required?: boolean;
+}> = (props) => {
+  return (
+    <Select {...props}>
+      <SelectTrigger className="w-32">
+        <SelectValue placeholder="Select visibility" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="public" className="flex gap-10">
+          <div className="flex items-center gap-2">
+            <TbWorld />
+            <span>Public</span>
+          </div>
+        </SelectItem>
+        <SelectItem value="private" className="flex gap-10">
+          <div className="flex items-center gap-2">
+            <TbLock />
+            <span>Private</span>
+          </div>
+        </SelectItem>
+        <SelectItem value="unlisted" className="flex gap-10">
+          <div className="flex items-center gap-2">
+            <TbEyeOff />
+            <span>Unlisted</span>
+          </div>
+        </SelectItem>
+      </SelectContent>
+    </Select>
+  );
+};
 
 export const PostForm: React.FC<{
   post: Post;
@@ -153,15 +206,10 @@ export const PostForm: React.FC<{
           <fieldset className="mb-4 flex flex-col gap-3 border-y border-white/20 py-5">
             <p className="text-xl font-semibold">Change visibility</p>
             <p>
-              <select
+              <VisibilitySelect
                 name="visibility"
                 defaultValue={post.visibility}
-                className="cursor-pointer rounded bg-white/10 px-4 py-2 pr-8 focus:border-white focus:outline-none"
-              >
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-                <option value="unlisted">Unlisted</option>
-              </select>
+              />
             </p>
           </fieldset>
         )}

@@ -8,9 +8,13 @@ import { ImageDescriptionInput, ImageRectangle } from "~/components/image";
 import { Button } from "~/components/ui/button";
 import { UploadDropzone } from "~/utils/uploadthing";
 import { createPost } from "./actions";
+import { VisibilitySelect } from "../i/[postId]/components";
+import { TbInfoCircle, TbPlus } from "react-icons/tb";
 
 export default function Home() {
-  const [file, setFile] = useState<{ url: string; key: string } | null>(null);
+  const [file, setFile] = useState<{ url: string; key: string } | null>();
+
+  const visibility = "public";
 
   return (
     <main className="grid w-screen place-content-center">
@@ -56,12 +60,27 @@ export default function Home() {
           <div className="flex-2 flex flex-col gap-4 md:flex-col-reverse md:gap-8">
             <fieldset className="flex flex-col gap-1">
               <h2 className="text-lg font-semibold">Tags</h2>
-              <p>tags here...</p>
+              <Button
+                variant="ghost"
+                disabled
+                className="h-7 w-fit gap-3 px-2 text-xs"
+              >
+                <TbPlus /> Add tag
+              </Button>
             </fieldset>
             <fieldset className="flex flex-col gap-1">
               <h2 className="text-lg font-semibold">Upload</h2>
-              <p>visibility here...</p>
-              <Button size="lg">Upload public</Button>
+              {/* TODO: maybe add <label /> */}
+              <VisibilitySelect defaultValue={visibility} />
+              <p className="mb-4 mt-1 flex items-center gap-1 text-sm font-light text-gray-200">
+                <TbInfoCircle />{" "}
+                {visibility === "public"
+                  ? "Anyone can see this image."
+                  : visibility === "private"
+                  ? "Only you can see this image."
+                  : "Anyone with the link can see this image."}
+              </p>
+              <Button size="lg">Upload {visibility}</Button>
             </fieldset>
           </div>
         </form>
