@@ -1,13 +1,35 @@
 "use client";
 
 import clsx from "clsx";
-import {
+import React, {
+  PropsWithChildren,
   TextareaHTMLAttributes,
   useLayoutEffect,
   useRef,
   useState,
 } from "react";
-import { TbDots } from "react-icons/tb";
+import { TbDots, TbDownload, TbFlag, TbLink, TbTrash } from "react-icons/tb";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu";
+
+export const ImageRectangleMenu: React.FC<{
+  postId: string;
+}> = ({ postId }) => {
+  return (
+    <ImageDropdownMenu
+      postId={postId}
+      className="absolute right-0 top-0 mr-3 mt-3 grid aspect-square place-items-center rounded bg-black/30 text-2xl transition-transform active:scale-95"
+    >
+      <TbDots />
+    </ImageDropdownMenu>
+  );
+};
 
 export const ImageRectangle: React.FC<{
   url: string;
@@ -24,14 +46,7 @@ export const ImageRectangle: React.FC<{
           zoomable ? "cursor-zoom-in" : "cursor-pointer"
         )}
       >
-        {menu !== undefined && (
-          <button
-            type="button"
-            className="absolute right-0 top-0 mr-3 mt-3 hidden aspect-square place-items-center rounded bg-black/30 text-2xl transition-transform active:scale-95 group-hover:grid"
-          >
-            <TbDots />
-          </button>
-        )}
+        {menu}
       </div>
       {/* <Image
         src={url}
@@ -84,5 +99,48 @@ export const ImageDescriptionInput: React.FC<
       placeholder="Add a description..."
       maxLength={500}
     />
+  );
+};
+
+export const ImageDropdownMenu: React.FC<
+  PropsWithChildren<
+    {
+      postId?: string;
+      deletePost?: React.FC<PropsWithChildren>;
+    } & DropdownMenuTriggerProps
+  >
+> = ({
+  children,
+  deletePost: DeletePostTrigger,
+  asChild = false,
+  ...props
+}) => {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger {...props}>{children}</DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem className="gap-2">
+          <TbLink /> Copy link
+        </DropdownMenuItem>
+        <DropdownMenuItem className="gap-2">
+          <TbDownload /> Download
+        </DropdownMenuItem>
+
+        {DeletePostTrigger === undefined ? (
+          <DropdownMenuItem className="gap-2">
+            <TbFlag /> Report
+          </DropdownMenuItem>
+        ) : (
+          <>
+            <DropdownMenuSeparator />
+            <DeletePostTrigger>
+              <DropdownMenuItem className="gap-2">
+                <TbTrash /> Delete post
+              </DropdownMenuItem>
+            </DeletePostTrigger>
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

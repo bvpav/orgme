@@ -1,7 +1,12 @@
 "use client";
 
 import { InferModel } from "drizzle-orm";
-import { ImageDescriptionInput, ImageRectangle } from "~/components/image";
+import {
+  ImageDescriptionInput,
+  ImageDropdownMenu,
+  ImageRectangle,
+  ImageRectangleMenu,
+} from "~/components/image";
 import { getPostTitle } from "~/utils/post";
 import { deletePost, updatePost } from "./actions";
 // TODO: manage to format this away w/ prettier
@@ -188,7 +193,7 @@ export const PostForm: React.FC<{
           <ImageRectangle
             url={post.imageUrl}
             alt={getPostTitle(post.title)}
-            menu={"TODO"}
+            menu={<ImageRectangleMenu postId={post.id} />}
           />
           {isAuthor && (
             <ImageDescriptionInput
@@ -199,7 +204,9 @@ export const PostForm: React.FC<{
         </div>
         <div className="mb-5 flex w-full items-center justify-between">
           {authorComponent}
-          <TbDots className="cursor-pointer text-2xl transition-transform active:scale-95" />
+          <ImageDropdownMenu postId={post.id}>
+            <TbDots className="cursor-pointer text-2xl transition-transform active:scale-95" />
+          </ImageDropdownMenu>
         </div>
         {!isAuthor && <p className="whitespace-pre-wrap">{post.description}</p>}
         {isAuthor && (

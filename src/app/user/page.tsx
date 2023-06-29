@@ -1,7 +1,7 @@
 import { clerkClient } from "@clerk/nextjs";
 import { desc, eq } from "drizzle-orm";
 import { redirect, usePathname } from "next/navigation";
-import { ImageRectangle } from "~/components/image";
+import { ImageRectangle, ImageRectangleMenu } from "~/components/image";
 import { UserLink } from "~/components/user";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
@@ -35,7 +35,7 @@ export default async function MyPostsPage() {
               url={post.imageUrl}
               zoomable={false}
               alt={getPostTitle(post.title)}
-              menu={"TODO"}
+              menu={<ImageRectangleMenu postId={post.id} />}
             />
             <UserLink userResponse={userResponse} />
             <p className="text-xl">{post.description}</p>

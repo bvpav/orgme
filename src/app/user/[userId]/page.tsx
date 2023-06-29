@@ -2,7 +2,7 @@ import Link from "next/link";
 import { clerkClient } from "@clerk/nextjs";
 import { and, eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { ImageRectangle } from "~/components/image";
+import { ImageRectangle, ImageRectangleMenu } from "~/components/image";
 import { UserLink } from "~/components/user";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
@@ -45,7 +45,7 @@ export default async function UserPage({
                   url={post.imageUrl}
                   zoomable={false}
                   alt={getPostTitle(post.title)}
-                  menu={"TODO"}
+                  menu={<ImageRectangleMenu postId={post.id} />}
                 />
               </Link>
               <UserLink userResponse={user} />
