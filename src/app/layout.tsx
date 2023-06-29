@@ -59,11 +59,7 @@ export default function RootLayout({
 
             <SignedIn>
               <div className="flex items-center gap-2">
-                <Button
-                  asChild
-                  variant="ghost"
-                  className="hidden sm:inline-flex"
-                >
+                <Button asChild variant="ghost" size="sm">
                   <Link href="/user">My images</Link>
                 </Button>
                 <UserButton />
@@ -74,11 +70,12 @@ export default function RootLayout({
                 <Button
                   asChild
                   variant="ghost"
+                  size="sm"
                   className="hidden sm:inline-flex"
                 >
                   <SignUpButton />
                 </Button>
-                <Button asChild variant="secondary">
+                <Button asChild variant="secondary" size="sm">
                   <SignInButton />
                 </Button>
               </div>
