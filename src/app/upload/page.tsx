@@ -12,7 +12,7 @@ import { VisibilitySelect } from "../i/[postId]/components";
 import { TbInfoCircle, TbPlus } from "react-icons/tb";
 
 export default function Home() {
-  const [file, setFile] = useState<{ url: string; key: string } | null>();
+  const [file, setFile] = useState<{ url: string; key: string } | null>(null);
 
   const visibility = "public";
 
