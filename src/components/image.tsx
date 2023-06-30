@@ -1,6 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
+import { AlertDialogTriggerProps } from "@radix-ui/react-alert-dialog";
 import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu";
 import { Portal } from "@radix-ui/react-portal";
 import clsx from "clsx";
@@ -16,25 +17,23 @@ import { TbDots, TbDownload, TbFlag, TbLink, TbTrash } from "react-icons/tb";
 import invariant from "tiny-invariant";
 import { copyToClipboard } from "~/utils/clipboard";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import {
-  AlertDialogTrigger,
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogDescription,
-  AlertDialogTitle,
-  AlertDialogFooter,
-  AlertDialogAction,
-  AlertDialogCancel,
-} from "./ui/alert-dialog";
-import { AlertDialogTriggerProps } from "@radix-ui/react-alert-dialog";
-import { Button } from "./ui/button";
 
 type Post = {
   id: string;
@@ -60,7 +59,7 @@ const DeleteImageContent: React.FC<{
           )}
           ?
         </AlertDialogTitle>
-        <AlertDialogDescription>
+        <AlertDialogDescription className="text-base">
           This action cannot be undone.
         </AlertDialogDescription>
       </AlertDialogHeader>
@@ -229,7 +228,7 @@ const DownloadImageMenuItem: React.FC<{
       post.imageUrl.includes("."),
       "image url doesn't have a file extension"
     );
-    const fileExtension = post.imageUrl.split(".").pop()!;
+    const fileExtension = post.imageUrl.split(".").at(-1)!;
     setFileName(`${post.title || post.id} - OrgMe.${fileExtension}`);
   }, [post.imageUrl, setFileName, post.id, post.title]);
 
