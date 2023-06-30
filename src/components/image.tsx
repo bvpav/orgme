@@ -161,8 +161,15 @@ const DownloadImageMenuItem: React.FC<{
 
   return (
     <DropdownMenuItem onClick={handleClick} className="gap-2">
-      <a ref={anchorRef} href={url} download={fileName} className="hidden">
-        Copy link
+      <a
+        ref={anchorRef}
+        href={url}
+        download={fileName}
+        target={url.startsWith("blob:") ? undefined : "_blank"}
+        rel="noopener noreferrer"
+        className="hidden"
+      >
+        Download
       </a>
       <TbDownload /> Download
     </DropdownMenuItem>
