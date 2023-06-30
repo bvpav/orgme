@@ -21,6 +21,7 @@ import {
 import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu";
 import { useUser } from "@clerk/nextjs";
 import invariant from "tiny-invariant";
+import { copyToClipboard } from "~/utils/clipboard";
 
 type Post = {
   id: string;
@@ -115,9 +116,18 @@ export const ImageDescriptionInput: React.FC<
   );
 };
 
-const CopyLinkMenuItem = () => {
+const CopyLinkMenuItem: React.FC<{
+  postId: string;
+}> = ({ postId }) => {
   return (
-    <DropdownMenuItem className="gap-2">
+    <DropdownMenuItem
+      onClick={() =>
+        void copyToClipboard(`${window.location.origin}/i/${postId}`).then(() =>
+          alert("Copied!")
+        )
+      }
+      className="gap-2"
+    >
       <TbLink /> Copy link
     </DropdownMenuItem>
   );
@@ -187,11 +197,11 @@ export const ImageDropdownMenu: React.FC<
   const isOwner = user && user.id === post.authorId;
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal>
       <DropdownMenuTrigger {...props}>{children}</DropdownMenuTrigger>
 
       <DropdownMenuContent>
-        <CopyLinkMenuItem />
+        <CopyLinkMenuItem postId={post.id} />
         <DownloadImageMenuItem post={post} />
 
         <DropdownMenuSeparator />
@@ -200,7 +210,7 @@ export const ImageDropdownMenu: React.FC<
             <TbTrash /> Delete
           </DropdownMenuItem>
         ) : (
-          <DropdownMenuItem className="gap-2">
+          <DropdownMenuItem disabled className="gap-2">
             <TbFlag /> Report
           </DropdownMenuItem>
         )}
