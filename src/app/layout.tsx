@@ -10,6 +10,7 @@ import clsx from "clsx";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { TbUpload } from "react-icons/tb";
+import "@uploadthing/react/styles.css";
 import "./globals.css";
 import { Button } from "~/components/ui/button";
 

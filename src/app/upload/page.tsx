@@ -1,6 +1,5 @@
 "use client";
 
-import "@uploadthing/react/styles.css";
 import { useState } from "react";
 import invariant from "tiny-invariant";
 
