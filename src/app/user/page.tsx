@@ -8,6 +8,10 @@ import { posts } from "~/db/schema";
 import { actuallyWorkingAuth } from "~/utils/hacks";
 import { getPostTitle } from "~/utils/post";
 
+export const metadata = {
+  title: "OrgMe - Your images",
+};
+
 export default async function MyPostsPage() {
   const { userId, user } = actuallyWorkingAuth();
   if (!userId) redirect("/sign-in");

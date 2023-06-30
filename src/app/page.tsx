@@ -10,6 +10,13 @@ import { getPostTitle } from "~/utils/post";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  title: "OrgMe - The comfiest image sharing platform",
+  description: `OrgMe is the comfiest image sharing platform. Upload your images and share them with the world.
+
+  OrgMe is my application to enter the organization team of HackTUES 10 - the 10th edition of the biggest hackathon in Bulgaria, organized by students for students, as well as TUES Fest 2024 - the open doors event of the Technological School "Electronic Systems" in Sofia, Bulgaria.`,
+};
+
 export default async function Home() {
   const publicPosts = await db
     .select()

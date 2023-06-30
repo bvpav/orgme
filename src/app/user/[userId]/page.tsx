@@ -9,15 +9,44 @@ import { posts } from "~/db/schema";
 import { getPostTitle } from "~/utils/post";
 import { getClerkUserId, getUserDisplayName } from "~/utils/user";
 import Image from "next/image";
+import { Metadata, ResolvingMetadata } from "next";
+import { cache } from "react";
 
-export default async function UserPage({
-  params,
-}: {
+type Props = {
   params: { userId: string };
-}) {
+};
+
+const loadUser = cache(async (publicUserId: string) => {
+  const clerkUserId = getClerkUserId(publicUserId);
+  const user = await clerkClient.users.getUser(clerkUserId);
+  return user;
+});
+
+export async function generateMetadata(
+  { params }: Props,
+  parent?: ResolvingMetadata
+): Promise<Metadata> {
+  const user = await loadUser(params.userId);
+  return {
+    title: `${getUserDisplayName(user)}'s images - OrgMe`,
+    openGraph: {
+      title: `${getUserDisplayName(user)}'s images - OrgMe`,
+      description: `Images uploaded by ${getUserDisplayName(user)} on OrgMe.`,
+      creators: [getUserDisplayName(user)],
+      images: [
+        {
+          url: user.profileImageUrl,
+          alt: getUserDisplayName(user),
+        },
+      ],
+    },
+  };
+}
+
+export default async function UserPage({ params }: Props) {
   const clerkUserId = getClerkUserId(params.userId);
   const [user, userPosts] = await Promise.all([
-    clerkClient.users.getUser(clerkUserId).catch(notFound),
+    loadUser(params.userId).catch(notFound),
     db
       .select()
       .from(posts)

@@ -8,13 +8,45 @@ import { actuallyWorkingAuth } from "~/utils/hacks";
 import { PostForm } from "./components";
 import { SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
+import { cache } from "react";
+import { Metadata, ResolvingMetadata } from "next";
+import { getPostTitle } from "~/utils/post";
 
 export const dynamic = "force-dynamic";
 
-async function getPost(postId: string) {
+type Props = {
+  params: { postId: string };
+};
+
+const getPost = cache(async (postId: string) => {
   const results = await db.select().from(posts).where(eq(posts.id, postId));
   if (!results.length) return null;
   return results[0];
+});
+
+export async function generateMetadata(
+  { params }: Props,
+  parent?: ResolvingMetadata
+): Promise<Metadata> {
+  const post = await getPost(params.postId);
+  // FIXME: idk how to handle this case
+  if (!post || post.visibility === "private") return {};
+
+  return {
+    title: `${getPostTitle(post.title)} - OrgMe`,
+    description: post.description || undefined,
+    openGraph: {
+      title: `${getPostTitle(post.title)} - OrgMe`,
+      description: post.description || undefined,
+      images: [
+        {
+          url: post.imageUrl,
+          alt: getPostTitle(post.title),
+        },
+      ],
+    },
+    robots: post.visibility === "public" ? "index" : "noindex",
+  };
 }
 
 const PrivatePage = () => (
@@ -37,11 +69,7 @@ const PrivatePage = () => (
   </main>
 );
 
-export default async function PostDetails({
-  params,
-}: {
-  params: { postId: string };
-}) {
+export default async function PostDetails({ params }: Props) {
   const post = await getPost(params.postId);
   if (!post) notFound();
 
