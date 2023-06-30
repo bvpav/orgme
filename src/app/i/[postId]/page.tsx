@@ -26,7 +26,7 @@ const getPost = cache(async (postId: string) => {
 
 export async function generateMetadata(
   { params }: Props,
-  parent?: ResolvingMetadata
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
   const post = await getPost(params.postId);
   // FIXME: idk how to handle this case

@@ -24,7 +24,7 @@ const loadUser = cache(async (publicUserId: string) => {
 
 export async function generateMetadata(
   { params }: Props,
-  parent?: ResolvingMetadata
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
   const user = await loadUser(params.userId);
   return {
