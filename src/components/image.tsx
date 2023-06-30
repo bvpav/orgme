@@ -5,6 +5,7 @@ import { AlertDialogTriggerProps } from "@radix-ui/react-alert-dialog";
 import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu";
 import { Portal } from "@radix-ui/react-portal";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import React, {
   PropsWithChildren,
   TextareaHTMLAttributes,
@@ -18,11 +19,11 @@ import {
   TbDownload,
   TbFlag,
   TbLink,
-  TbLoader,
   TbLoader2,
   TbTrash,
 } from "react-icons/tb";
 import invariant from "tiny-invariant";
+import { deletePost } from "~/app/i/[postId]/actions";
 import { copyToClipboard } from "~/utils/clipboard";
 import {
   AlertDialog,
@@ -42,9 +43,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useZact } from "zact/client";
-import { deletePost } from "~/app/i/[postId]/actions";
-import { useRouter } from "next/navigation";
 
 type Post = {
   id: string;
@@ -68,7 +66,8 @@ const DeleteImageContent: React.FC<{
         alert("deleted!");
         router.push("/");
       })
-      .catch(() => alert("error!"));
+      .catch(() => alert("error!"))
+      .finally(() => setIsLoading(false));
   };
 
   return (
