@@ -1,16 +1,20 @@
 "use client";
 
+import { useUser } from "@clerk/nextjs";
+import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu";
+import { Portal } from "@radix-ui/react-portal";
 import clsx from "clsx";
 import React, {
   PropsWithChildren,
   TextareaHTMLAttributes,
-  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
   useState,
 } from "react";
 import { TbDots, TbDownload, TbFlag, TbLink, TbTrash } from "react-icons/tb";
+import invariant from "tiny-invariant";
+import { copyToClipboard } from "~/utils/clipboard";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,11 +22,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu";
-import { useUser } from "@clerk/nextjs";
-import invariant from "tiny-invariant";
-import { copyToClipboard } from "~/utils/clipboard";
-import { Portal } from "@radix-ui/react-portal";
+import {
+  AlertDialogTrigger,
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "./ui/alert-dialog";
+import { AlertDialogTriggerProps } from "@radix-ui/react-alert-dialog";
+import { Button } from "./ui/button";
 
 type Post = {
   id: string;
@@ -31,6 +43,48 @@ type Post = {
   title: string;
   // FIXME: dont overfetch :(
   // imageFK: never;
+};
+
+const DeleteImageContent: React.FC<{
+  post: Post;
+}> = ({ post }) => {
+  return (
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>
+          Delete{" "}
+          {post.title ? (
+            <span className="font-extrabold">{post.title}</span>
+          ) : (
+            "image"
+          )}
+          ?
+        </AlertDialogTitle>
+        <AlertDialogDescription>
+          This action cannot be undone.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction onClick={() => alert("deleting...")}>
+          Delete
+        </AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  );
+};
+
+export const DeleteImageDialog: React.FC<
+  {
+    post: Post;
+  } & AlertDialogTriggerProps
+> = ({ post, ...props }) => {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger {...props} />
+      <DeleteImageContent post={post} />
+    </AlertDialog>
+  );
 };
 
 export const ImageRectangleMenu: React.FC<{
@@ -212,24 +266,30 @@ export const ImageDropdownMenu: React.FC<
   const isOwner = user && user.id === post.authorId;
 
   return (
-    <DropdownMenu modal={true}>
-      <DropdownMenuTrigger {...props}>{children}</DropdownMenuTrigger>
+    <AlertDialog>
+      <DropdownMenu modal={true}>
+        <DropdownMenuTrigger {...props}>{children}</DropdownMenuTrigger>
 
-      <DropdownMenuContent>
-        <CopyLinkMenuItem postId={post.id} />
-        <DownloadImageMenuItem post={post} />
+        <DropdownMenuContent>
+          <CopyLinkMenuItem postId={post.id} />
+          <DownloadImageMenuItem post={post} />
 
-        <DropdownMenuSeparator />
-        {isOwner ? (
-          <DropdownMenuItem className="gap-2">
-            <TbTrash /> Delete
-          </DropdownMenuItem>
-        ) : (
-          <DropdownMenuItem disabled className="gap-2">
-            <TbFlag /> Report
-          </DropdownMenuItem>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuSeparator />
+          {isOwner ? (
+            <AlertDialogTrigger asChild>
+              <DropdownMenuItem className="gap-2">
+                <TbTrash /> Delete
+              </DropdownMenuItem>
+            </AlertDialogTrigger>
+          ) : (
+            <DropdownMenuItem disabled className="gap-2">
+              <TbFlag /> Report
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <DeleteImageContent post={post} />
+    </AlertDialog>
   );
 };

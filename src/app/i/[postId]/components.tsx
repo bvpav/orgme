@@ -2,6 +2,7 @@
 
 import { InferModel } from "drizzle-orm";
 import {
+  DeleteImageDialog,
   ImageDescriptionInput,
   ImageDropdownMenu,
   ImageRectangle,
@@ -225,9 +226,11 @@ export const PostForm: React.FC<{
             <Button variant="secondary" type="submit">
               Save changes
             </Button>
-            <Button variant="destructive" form="delete-form">
-              Delete image
-            </Button>
+            <DeleteImageDialog post={post}>
+              <Button variant="destructive" form="delete-form">
+                Delete image
+              </Button>
+            </DeleteImageDialog>
           </div>
         )}
       </form>
