@@ -227,18 +227,11 @@ export const PostForm: React.FC<{
               Save changes
             </Button>
             <DeleteImageDialog post={post}>
-              <Button variant="destructive" form="delete-form">
-                Delete image
-              </Button>
+              <Button variant="destructive">Delete image</Button>
             </DeleteImageDialog>
           </div>
         )}
       </form>
-      {isAuthor && (
-        <form action={deletePost} name="delete-form">
-          <input type="hidden" name="postId" value={post.id} />
-        </form>
-      )}
     </main>
   );
 };

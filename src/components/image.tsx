@@ -13,7 +13,15 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { TbDots, TbDownload, TbFlag, TbLink, TbTrash } from "react-icons/tb";
+import {
+  TbDots,
+  TbDownload,
+  TbFlag,
+  TbLink,
+  TbLoader,
+  TbLoader2,
+  TbTrash,
+} from "react-icons/tb";
 import invariant from "tiny-invariant";
 import { copyToClipboard } from "~/utils/clipboard";
 import {
@@ -34,6 +42,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useZact } from "zact/client";
+import { deletePost } from "~/app/i/[postId]/actions";
+import { useRouter } from "next/navigation";
 
 type Post = {
   id: string;
@@ -47,6 +58,19 @@ type Post = {
 const DeleteImageContent: React.FC<{
   post: Post;
 }> = ({ post }) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleDelete = () => {
+    setIsLoading(true);
+    deletePost({ postId: post.id })
+      .then(() => {
+        alert("deleted!");
+        router.push("/");
+      })
+      .catch(() => alert("error!"));
+  };
+
   return (
     <AlertDialogContent>
       <AlertDialogHeader>
@@ -65,8 +89,14 @@ const DeleteImageContent: React.FC<{
       </AlertDialogHeader>
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction onClick={() => alert("deleting...")}>
-          Delete
+        <AlertDialogAction onClick={handleDelete} disabled={isLoading}>
+          {!isLoading ? (
+            "Delete"
+          ) : (
+            <>
+              <TbLoader2 className="mr-2 animate-spin" /> Deleting...
+            </>
+          )}
         </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
@@ -116,12 +146,6 @@ export const ImageRectangle: React.FC<{
       >
         {menu}
       </div>
-      {/* <Image
-        src={url}
-        alt="the image to be uploaded"
-        fill
-        className="object-cover"
-      /> */}
     </div>
   );
 };
