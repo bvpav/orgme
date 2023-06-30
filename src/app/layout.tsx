@@ -22,6 +22,8 @@ export const metadata = {
   description: "OrgMe - The world's comfiest image sharing platform.",
 };
 
+export const runtime = "edge";
+
 export default function RootLayout({
   children,
 }: {
