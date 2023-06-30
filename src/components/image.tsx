@@ -134,6 +134,14 @@ const CopyLinkMenuItem: React.FC<{
   );
 };
 
+// FIXME: this is a bit cursed
+//
+// We need to download the image, however we can't just use the image url
+// because s3 doesn't set the Content-Disposition header to attachment.
+//
+// We can use the <a download> attribute, but that doesn't work with cross-origin
+// images, so we need to download the image and create a blob url, which we can
+// then use as the href for the <a download> element.
 const DownloadImageMenuItem: React.FC<{
   post: Post;
 }> = ({ post }) => {
