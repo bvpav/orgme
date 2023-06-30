@@ -13,6 +13,7 @@ import { TbUpload } from "react-icons/tb";
 import "@uploadthing/react/styles.css";
 import "./globals.css";
 import { Button } from "~/components/ui/button";
+import { Toaster } from "~/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -97,6 +98,7 @@ export default function RootLayout({
               .
             </p>
           </footer>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

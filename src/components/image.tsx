@@ -43,6 +43,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useToast } from "./ui/use-toast";
 
 type Post = {
   id: string;
@@ -57,16 +58,26 @@ const DeleteImageContent: React.FC<{
   post: Post;
 }> = ({ post }) => {
   const router = useRouter();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = () => {
     setIsLoading(true);
     deletePost({ postId: post.id })
       .then(() => {
-        alert("deleted!");
+        toast({
+          title: "Image deleted",
+          description: "Your image has been deleted.",
+        });
         router.push("/");
       })
-      .catch(() => alert("error!"))
+      .catch(() =>
+        toast({
+          title: "Unable to delete image",
+          description: "Something went wrong, please try again later.",
+          variant: "destructive",
+        })
+      )
       .finally(() => setIsLoading(false));
   };
 
@@ -196,11 +207,19 @@ export const ImageDescriptionInput: React.FC<
 const CopyLinkMenuItem: React.FC<{
   postId: string;
 }> = ({ postId }) => {
+  const { toast } = useToast();
   return (
     <DropdownMenuItem
       onClick={() =>
         void copyToClipboard(`${window.location.origin}/i/${postId}`).then(() =>
-          alert("Copied!")
+          toast({
+            // FIXME: make typescript happy
+            title: (
+              <div className="flex gap-2">
+                <TbLink /> Link copied
+              </div>
+            ) as any,
+          })
         )
       }
       className="gap-2"

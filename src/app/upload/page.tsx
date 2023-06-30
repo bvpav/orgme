@@ -9,9 +9,11 @@ import { UploadDropzone } from "~/utils/uploadthing";
 import { createPost } from "./actions";
 import { VisibilitySelect } from "../i/[postId]/components";
 import { TbInfoCircle, TbPlus } from "react-icons/tb";
+import { useToast } from "~/components/ui/use-toast";
 
 export default function Home() {
   const [file, setFile] = useState<{ url: string; key: string } | null>(null);
+  const { toast } = useToast();
 
   const visibility = "public";
 
@@ -34,8 +36,11 @@ export default function Home() {
               });
             }}
             onUploadError={(error: Error) => {
-              // Do something with the error.
-              alert(`ERROR! ${error.message}`);
+              toast({
+                title: "Unable to upload image",
+                description: error.message,
+                variant: "destructive",
+              });
             }}
           />
         </section>
