@@ -22,6 +22,7 @@ import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu";
 import { useUser } from "@clerk/nextjs";
 import invariant from "tiny-invariant";
 import { copyToClipboard } from "~/utils/clipboard";
+import { Portal } from "@radix-ui/react-portal";
 
 type Post = {
   id: string;
@@ -140,9 +141,11 @@ const DownloadImageMenuItem: React.FC<{
   const [url, setUrl] = useState(post.imageUrl);
   const [fileName, setFileName] = useState<string | true>(true);
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    alert("Downloading...");
     if (!anchorRef.current) return;
     anchorRef.current.click();
+    e.stopPropagation();
   };
 
   useEffect(() => {
@@ -170,19 +173,23 @@ const DownloadImageMenuItem: React.FC<{
   }, [post.imageUrl, setFileName, post.id, post.title]);
 
   return (
-    <DropdownMenuItem onClick={handleClick} className="gap-2">
-      <a
-        ref={anchorRef}
-        href={url}
-        download={fileName}
-        target={url.startsWith("blob:") ? undefined : "_blank"}
-        rel="noopener noreferrer"
-        className="hidden"
-      >
-        Download
-      </a>
-      <TbDownload /> Download
-    </DropdownMenuItem>
+    <>
+      <Portal>
+        <a
+          ref={anchorRef}
+          href={url}
+          download={fileName}
+          target={url.startsWith("blob:") ? undefined : "_blank"}
+          rel="noopener noreferrer"
+          className="hidden"
+        >
+          Download
+        </a>
+      </Portal>
+      <DropdownMenuItem onClick={handleClick} className="gap-2">
+        <TbDownload /> Download
+      </DropdownMenuItem>
+    </>
   );
 };
 
@@ -197,7 +204,7 @@ export const ImageDropdownMenu: React.FC<
   const isOwner = user && user.id === post.authorId;
 
   return (
-    <DropdownMenu modal>
+    <DropdownMenu modal={true}>
       <DropdownMenuTrigger {...props}>{children}</DropdownMenuTrigger>
 
       <DropdownMenuContent>
