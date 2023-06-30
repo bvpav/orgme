@@ -4,6 +4,8 @@ import clsx from "clsx";
 import React, {
   PropsWithChildren,
   TextareaHTMLAttributes,
+  useCallback,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -17,13 +19,24 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu";
+import { useUser } from "@clerk/nextjs";
+import invariant from "tiny-invariant";
+
+type Post = {
+  id: string;
+  authorId: string;
+  imageUrl: string;
+  title: string;
+  // FIXME: dont overfetch :(
+  // imageFK: never;
+};
 
 export const ImageRectangleMenu: React.FC<{
-  postId: string;
-}> = ({ postId }) => {
+  post: Post;
+}> = ({ post }) => {
   return (
     <ImageDropdownMenu
-      postId={postId}
+      post={post}
       className="absolute right-0 top-0 mr-3 mt-3 grid aspect-square place-items-center rounded bg-black/30 text-2xl transition-transform active:scale-95"
     >
       <TbDots />
@@ -102,43 +115,87 @@ export const ImageDescriptionInput: React.FC<
   );
 };
 
+const CopyLinkMenuItem = () => {
+  return (
+    <DropdownMenuItem className="gap-2">
+      <TbLink /> Copy link
+    </DropdownMenuItem>
+  );
+};
+
+const DownloadImageMenuItem: React.FC<{
+  post: Post;
+}> = ({ post }) => {
+  const anchorRef = useRef<HTMLAnchorElement>(null);
+  const [url, setUrl] = useState(post.imageUrl);
+  const [fileName, setFileName] = useState<string | true>(true);
+
+  const handleClick = () => {
+    if (!anchorRef.current) return;
+    anchorRef.current.click();
+  };
+
+  useEffect(() => {
+    void (async () => {
+      const response = await fetch(post.imageUrl);
+      const blob = await response.blob();
+      const newUrl = URL.createObjectURL(blob);
+      console.log("newUrl", newUrl);
+      setUrl((oldUrl) => {
+        // XXX: cursed setState callback ;-;
+        // (but we need to revoke the old url somehow)
+        if (oldUrl !== post.imageUrl) URL.revokeObjectURL(oldUrl);
+        return newUrl;
+      });
+    })();
+  }, [post.imageUrl, setUrl]);
+
+  useEffect(() => {
+    invariant(
+      post.imageUrl.includes("."),
+      "image url doesn't have a file extension"
+    );
+    const fileExtension = post.imageUrl.split(".").pop()!;
+    setFileName(`${post.title || post.id} - OrgMe.${fileExtension}`);
+  }, [post.imageUrl, setFileName, post.id, post.title]);
+
+  return (
+    <DropdownMenuItem onClick={handleClick} className="gap-2">
+      <a ref={anchorRef} href={url} download={fileName} className="hidden">
+        Copy link
+      </a>
+      <TbDownload /> Download
+    </DropdownMenuItem>
+  );
+};
+
 export const ImageDropdownMenu: React.FC<
   PropsWithChildren<
     {
-      postId?: string;
-      deletePost?: React.FC<PropsWithChildren>;
+      post: Post;
     } & DropdownMenuTriggerProps
   >
-> = ({
-  children,
-  deletePost: DeletePostTrigger,
-  asChild = false,
-  ...props
-}) => {
+> = ({ children, post, ...props }) => {
+  const { user } = useUser();
+  const isOwner = user && user.id === post.authorId;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger {...props}>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem className="gap-2">
-          <TbLink /> Copy link
-        </DropdownMenuItem>
-        <DropdownMenuItem className="gap-2">
-          <TbDownload /> Download
-        </DropdownMenuItem>
 
-        {DeletePostTrigger === undefined ? (
+      <DropdownMenuContent>
+        <CopyLinkMenuItem />
+        <DownloadImageMenuItem post={post} />
+
+        <DropdownMenuSeparator />
+        {isOwner ? (
+          <DropdownMenuItem className="gap-2">
+            <TbTrash /> Delete
+          </DropdownMenuItem>
+        ) : (
           <DropdownMenuItem className="gap-2">
             <TbFlag /> Report
           </DropdownMenuItem>
-        ) : (
-          <>
-            <DropdownMenuSeparator />
-            <DeletePostTrigger>
-              <DropdownMenuItem className="gap-2">
-                <TbTrash /> Delete post
-              </DropdownMenuItem>
-            </DeletePostTrigger>
-          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

@@ -45,7 +45,7 @@ export default async function UserPage({
                   url={post.imageUrl}
                   zoomable={false}
                   alt={getPostTitle(post.title)}
-                  menu={<ImageRectangleMenu postId={post.id} />}
+                  menu={<ImageRectangleMenu post={post} />}
                 />
               </Link>
               <UserLink userResponse={user} />

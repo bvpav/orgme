@@ -35,7 +35,7 @@ export default async function MyPostsPage() {
               url={post.imageUrl}
               zoomable={false}
               alt={getPostTitle(post.title)}
-              menu={<ImageRectangleMenu postId={post.id} />}
+              menu={<ImageRectangleMenu post={post} />}
             />
             <UserLink userResponse={userResponse} />
             <p className="text-xl">{post.description}</p>

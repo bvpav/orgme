@@ -193,7 +193,7 @@ export const PostForm: React.FC<{
           <ImageRectangle
             url={post.imageUrl}
             alt={getPostTitle(post.title)}
-            menu={<ImageRectangleMenu postId={post.id} />}
+            menu={<ImageRectangleMenu post={post} />}
           />
           {isAuthor && (
             <ImageDescriptionInput
@@ -204,7 +204,7 @@ export const PostForm: React.FC<{
         </div>
         <div className="mb-5 flex w-full items-center justify-between">
           {authorComponent}
-          <ImageDropdownMenu postId={post.id}>
+          <ImageDropdownMenu post={post}>
             <TbDots className="cursor-pointer text-2xl transition-transform active:scale-95" />
           </ImageDropdownMenu>
         </div>
