@@ -204,7 +204,6 @@ const DownloadImageMenuItem: React.FC<{
   const [fileName, setFileName] = useState<string | true>(true);
 
   const handleClick = (e: React.MouseEvent) => {
-    alert("Downloading...");
     if (!anchorRef.current) return;
     anchorRef.current.click();
     e.stopPropagation();
