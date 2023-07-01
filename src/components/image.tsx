@@ -272,7 +272,7 @@ export const ImageDropdownMenu: React.FC<
           <DropdownMenuSeparator />
           {isOwner ? (
             <AlertDialogTrigger asChild>
-              <DropdownMenuItem className="gap-2 text-red-500">
+              <DropdownMenuItem className="gap-2 text-red-600 focus:text-red-700">
                 <TbTrash /> Delete
               </DropdownMenuItem>
             </AlertDialogTrigger>
