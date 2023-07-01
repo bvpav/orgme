@@ -13,9 +13,10 @@ import { useToast } from "~/components/ui/use-toast";
 
 export default function Home() {
   const [file, setFile] = useState<{ url: string; key: string } | null>(null);
+  const [visibility, setVisibility] = useState<
+    "public" | "private" | "unlisted"
+  >("public");
   const { toast } = useToast();
-
-  const visibility = "public";
 
   return (
     <main className="grid w-screen place-content-center">
@@ -75,7 +76,11 @@ export default function Home() {
             <fieldset className="flex flex-col gap-1">
               <h2 className="text-lg font-semibold">Upload</h2>
               {/* TODO: maybe add <label /> */}
-              <VisibilitySelect defaultValue={visibility} />
+              <VisibilitySelect
+                value={visibility}
+                onValueChange={setVisibility}
+                name="visibility"
+              />
               <p className="mb-4 mt-1 flex items-center gap-1 text-sm font-light text-gray-200">
                 <TbInfoCircle />{" "}
                 {visibility === "public"

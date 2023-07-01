@@ -19,7 +19,12 @@ export async function createPost(data: FormData) {
 
   const title = getOptString(data, "title");
   const description = getOptString(data, "description");
-  const visibility = "public";
+  const visibility =
+    getOptString(data, "visibility") === "public"
+      ? "public"
+      : getOptString(data, "visibility") === "private"
+      ? "private"
+      : "unlisted";
 
   const images = await utapi.getFileUrls(fileKey);
   invariant(images.length === 1, "Expected exactly one image");
