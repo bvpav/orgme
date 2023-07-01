@@ -215,7 +215,7 @@ const CopyLinkMenuItem: React.FC<{
           toast({
             // FIXME: make typescript happy
             title: (
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
                 <TbLink /> Link copied
               </div>
             ) as any,
