@@ -1,27 +1,39 @@
+import { User } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { ImageRectangle, ImageRectangleMenu } from "../image";
 import { getPostTitle } from "~/utils/post";
 import { cn } from "~/utils/ui";
+import { ImageRectangle, ImageRectangleMenu, VisibilityText } from "../image";
 import { UserLink } from "../user";
-import { User } from "@clerk/nextjs/server";
 
 type Post = {
   id: string;
   title: string;
   imageUrl: string;
   authorId: string;
+  visibility: "public" | "private" | "unlisted";
 };
+
+function isHidden(post: Post) {
+  return post.visibility === "unlisted" || post.visibility === "private";
+}
 
 export const PostGrid: React.FC<{
   posts: Post[];
   getUserResponse: (post: Post) => User | Promise<User>;
-}> = ({ posts, getUserResponse }) => {
+  showVisibility?: boolean;
+}> = ({ posts, getUserResponse, showVisibility = false }) => {
   return posts.length > 0 ? (
     <div className="grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
       {posts.map((post) => (
         <article
           key={post.id}
-          className="flex flex-col items-center justify-start gap-2 overflow-clip rounded-md bg-gradient-to-b from-transparent via-transparent to-white/5 shadow-sm transition-transform md:hover:scale-105"
+          className={cn(
+            "group flex flex-col items-center justify-start gap-2 overflow-clip rounded-md bg-gradient-to-b from-transparent via-transparent to-white/5 shadow-sm transition-transform md:hover:scale-105",
+            {
+              "border-2 border-dashed border-white/10 hover:border-white/20":
+                isHidden(post),
+            }
+          )}
         >
           <Link
             href={`/i/${post.id}`}
@@ -35,12 +47,21 @@ export const PostGrid: React.FC<{
             />
             <h1
               className={cn("text-2xl font-semibold", {
-                "opacity-50": !post.title,
+                "opacity-50": !isHidden(post) && !post.title,
+                "opacity-20 transition-colors group-hover:opacity-50":
+                  isHidden(post) && !post.title,
+                "opacity-70 transition-colors group-hover:opacity-100":
+                  isHidden(post) && post.title,
               })}
             >
               {getPostTitle(post.title)}
             </h1>
           </Link>
+          {showVisibility && (
+            <div className="text-xs font-semibold text-gray-400">
+              <VisibilityText visibility={post.visibility} />
+            </div>
+          )}
           <div className="mb-2">
             <UserLink userResponse={getUserResponse(post)} />
           </div>

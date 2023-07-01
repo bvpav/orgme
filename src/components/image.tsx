@@ -15,10 +15,13 @@ import React, {
 import {
   TbDots,
   TbDownload,
+  TbEyeOff,
   TbFlag,
   TbLink,
   TbLoader2,
+  TbLock,
   TbTrash,
+  TbWorld,
 } from "react-icons/tb";
 import { deletePost } from "~/app/i/[postId]/actions";
 import { copyToClipboard } from "~/utils/clipboard";
@@ -283,5 +286,27 @@ export const ImageDropdownMenu: React.FC<
 
       <DeleteImageContent post={post} />
     </AlertDialog>
+  );
+};
+
+export const VisibilityText: React.FC<{
+  visibility: "public" | "private" | "unlisted";
+}> = ({ visibility }) => {
+  return (
+    <span className="flex items-center gap-1">
+      {visibility === "public" ? (
+        <>
+          <TbWorld /> Public
+        </>
+      ) : visibility === "private" ? (
+        <>
+          <TbLock /> Private
+        </>
+      ) : (
+        <>
+          <TbEyeOff /> Unlisted
+        </>
+      )}
+    </span>
   );
 };

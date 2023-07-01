@@ -7,6 +7,7 @@ import {
   ImageDropdownMenu,
   ImageRectangle,
   ImageRectangleMenu,
+  VisibilityText,
 } from "~/components/image";
 import { getPostTitle } from "~/utils/post";
 import { deletePost, updatePost } from "./actions";
@@ -174,21 +175,7 @@ export const PostForm: React.FC<{
         <p className="flex gap-2 text-sm font-light">
           <span>{`Uploaded ${formatDate(post.createdAt)}`}</span>
           {"•"}
-          <span className="flex items-center gap-1">
-            {post.visibility === "public" ? (
-              <>
-                <TbWorld /> Public
-              </>
-            ) : post.visibility === "private" ? (
-              <>
-                <TbLock /> Private
-              </>
-            ) : (
-              <>
-                <TbEyeOff /> Unlisted
-              </>
-            )}
-          </span>
+          <VisibilityText visibility={post.visibility} />
         </p>
         <div className="my-4 overflow-clip rounded-md">
           <ImageRectangle
