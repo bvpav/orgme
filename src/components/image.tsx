@@ -3,13 +3,11 @@
 import { useUser } from "@clerk/nextjs";
 import { AlertDialogTriggerProps } from "@radix-ui/react-alert-dialog";
 import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu";
-import { Portal } from "@radix-ui/react-portal";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, {
   PropsWithChildren,
   TextareaHTMLAttributes,
-  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -22,7 +20,6 @@ import {
   TbLoader2,
   TbTrash,
 } from "react-icons/tb";
-import invariant from "tiny-invariant";
 import { deletePost } from "~/app/i/[postId]/actions";
 import { copyToClipboard } from "~/utils/clipboard";
 import {
@@ -229,69 +226,24 @@ const CopyLinkMenuItem: React.FC<{
   );
 };
 
-// FIXME: this is a bit cursed
-//
-// We need to download the image, however we can't just use the image url
-// because s3 doesn't set the Content-Disposition header to attachment.
-//
-// We can use the <a download> attribute, but that doesn't work with cross-origin
-// images, so we need to download the image and create a blob url, which we can
-// then use as the href for the <a download> element.
 const DownloadImageMenuItem: React.FC<{
   post: Post;
 }> = ({ post }) => {
   const anchorRef = useRef<HTMLAnchorElement>(null);
-  const [url, setUrl] = useState(post.imageUrl);
-  const [fileName, setFileName] = useState<string | true>(true);
-
-  const handleClick = (e: React.MouseEvent) => {
-    if (!anchorRef.current) return;
-    anchorRef.current.click();
-    e.stopPropagation();
-  };
-
-  useEffect(() => {
-    void (async () => {
-      const response = await fetch(post.imageUrl);
-      const blob = await response.blob();
-      const newUrl = URL.createObjectURL(blob);
-      console.log("newUrl", newUrl);
-      setUrl((oldUrl) => {
-        // XXX: cursed setState callback ;-;
-        // (but we need to revoke the old url somehow)
-        if (oldUrl !== post.imageUrl) URL.revokeObjectURL(oldUrl);
-        return newUrl;
-      });
-    })();
-  }, [post.imageUrl, setUrl]);
-
-  useEffect(() => {
-    invariant(
-      post.imageUrl.includes("."),
-      "image url doesn't have a file extension"
-    );
-    const fileExtension = post.imageUrl.split(".").at(-1)!;
-    setFileName(`${post.title || post.id} - OrgMe.${fileExtension}`);
-  }, [post.imageUrl, setFileName, post.id, post.title]);
-
   return (
-    <>
-      <Portal>
-        <a
-          ref={anchorRef}
-          href={url}
-          download={fileName}
-          target={url.startsWith("blob:") ? undefined : "_blank"}
-          rel="noopener noreferrer"
-          className="hidden"
-        >
-          Download
-        </a>
-      </Portal>
-      <DropdownMenuItem onClick={handleClick} className="gap-2">
+    <DropdownMenuItem
+      onClick={() => anchorRef.current?.click()}
+      asChild
+      className="gap-2"
+    >
+      <a
+        ref={anchorRef}
+        href={`/api/download?i=${encodeURIComponent(post.id)}`}
+        rel="noopener noreferrer nofollow"
+      >
         <TbDownload /> Download
-      </DropdownMenuItem>
-    </>
+      </a>
+    </DropdownMenuItem>
   );
 };
 
