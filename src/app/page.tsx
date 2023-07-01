@@ -42,7 +42,7 @@ export default async function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between px-3 py-24">
       <PostGrid
         posts={publicPosts}
         getUserResponse={(post) => getUser(post.authorId)}
