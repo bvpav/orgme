@@ -11,6 +11,8 @@ import { getClerkUserId, getUserDisplayName } from "~/utils/user";
 import Image from "next/image";
 import { Metadata, ResolvingMetadata } from "next";
 import { cache } from "react";
+import { cn } from "~/utils/ui";
+import { PostGrid } from "~/components/server/image";
 
 type Props = {
   params: { userId: string };
@@ -56,35 +58,18 @@ export default async function UserPage({ params }: Props) {
   ]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="relative aspect-square w-full max-w-xs overflow-clip rounded-full">
-        <Image fill src={user.profileImageUrl} alt={getUserDisplayName(user)} />
-      </div>
-      <h1 className="text-4xl font-bold">{getUserDisplayName(user)}</h1>
-      {userPosts.length > 0 ? (
-        <div className="grid grid-cols-3 gap-4">
-          {userPosts.map((post) => (
-            <article
-              key={post.id}
-              className="flex flex-col items-center justify-center"
-            >
-              <h1 className="text-4xl font-bold">{post.title}</h1>
-              <Link href={`/i/${post.id}`}>
-                <ImageRectangle
-                  url={post.imageUrl}
-                  zoomable={false}
-                  alt={getPostTitle(post.title)}
-                  menu={<ImageRectangleMenu post={post} />}
-                />
-              </Link>
-              <UserLink userResponse={user} />
-              <p className="text-xl">{post.description}</p>
-            </article>
-          ))}
+    <main className="flex min-h-[70vh] flex-col items-center justify-start px-3">
+      <div className="mb-9 flex w-full flex-col items-center justify-start gap-2 md:mb-16 md:mt-10">
+        <div className="relative aspect-square w-full max-w-[10rem] overflow-clip rounded-full">
+          <Image
+            fill
+            src={user.profileImageUrl}
+            alt={getUserDisplayName(user)}
+          />
         </div>
-      ) : (
-        <h1 className="text-4xl font-bold">No posts yet</h1>
-      )}
+        <h1 className="text-4xl font-bold">{getUserDisplayName(user)}</h1>
+      </div>
+      <PostGrid posts={userPosts} getUserResponse={() => user} />
     </main>
   );
 }
