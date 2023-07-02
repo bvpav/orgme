@@ -58,7 +58,12 @@ export const PostGrid: React.FC<{
             </h1>
           </Link>
           {showVisibility && (
-            <div className="text-xs font-semibold text-gray-400">
+            <div
+              className={cn("text-xs font-semibold", {
+                "text-white": !isHidden(post),
+                "text-gray-400 group-hover:text-white": isHidden(post),
+              })}
+            >
               <VisibilityText visibility={post.visibility} />
             </div>
           )}
