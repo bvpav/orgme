@@ -147,7 +147,7 @@ export const PostForm: React.FC<{
         <h1 className="flex w-full items-center gap-3 text-2xl">
           <AutoInput
             ref={titleInputRef}
-            className="max-w-full border-none bg-transparent font-bold placeholder-gray-400/50 outline-none placeholder:italic"
+            className="w-full max-w-full border-none bg-transparent font-bold placeholder-gray-400/50 outline-none placeholder:italic"
             id="title"
             name="title"
             placeholder={isAuthor ? "Add a title..." : undefined}
