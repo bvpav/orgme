@@ -27,7 +27,7 @@ export default async function MyPostsPage() {
   ]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between px-3 py-24">
+    <main className="flex min-h-screen flex-col items-center px-3 py-24">
       <h1 className="mb-5 text-center text-4xl font-bold">Your images</h1>
       <PostGrid
         posts={userPosts}
