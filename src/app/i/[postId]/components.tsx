@@ -17,6 +17,7 @@ import { Direction } from "@radix-ui/react-select";
 import clsx from "clsx";
 import React, { HTMLProps, useLayoutEffect, useRef, useState } from "react";
 import { TbDots, TbEyeOff, TbLock, TbPencil, TbWorld } from "react-icons/tb";
+import { ActionLoadingButton } from "~/components/ui/action-loading-button";
 import { Button } from "~/components/ui/button";
 import {
   Select,
@@ -211,9 +212,13 @@ export const PostForm: React.FC<{
         )}
         {isAuthor && (
           <div className="flex justify-end gap-3">
-            <Button variant="secondary" type="submit">
+            <ActionLoadingButton
+              loadingContent="Saving..."
+              variant="secondary"
+              type="submit"
+            >
               Save changes
-            </Button>
+            </ActionLoadingButton>
             <DeleteImageDialog post={post}>
               <Button variant="destructive">Delete image</Button>
             </DeleteImageDialog>

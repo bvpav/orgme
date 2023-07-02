@@ -10,6 +10,7 @@ import { createPost } from "./actions";
 import { VisibilitySelect } from "../i/[postId]/components";
 import { TbInfoCircle, TbPlus } from "react-icons/tb";
 import { useToast } from "~/components/ui/use-toast";
+import { ActionLoadingButton } from "~/components/ui/action-loading-button";
 
 export default function Home() {
   const [file, setFile] = useState<{ url: string; key: string } | null>(null);
@@ -89,7 +90,9 @@ export default function Home() {
                   ? "Only you can see this image."
                   : "Anyone with the link can see this image."}
               </p>
-              <Button size="lg">Upload {visibility}</Button>
+              <ActionLoadingButton loadingContent="Uploading..." size="lg">
+                Upload {visibility}
+              </ActionLoadingButton>
             </fieldset>
           </div>
         </form>
