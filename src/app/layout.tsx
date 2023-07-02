@@ -62,10 +62,12 @@ export default function RootLayout({
             </div>
 
             <SignedIn>
-              <div className="flex items-center gap-2">
-                <Button asChild variant="ghost" size="sm">
-                  <Link href="/user">My images</Link>
-                </Button>
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="border-white/10 md:border-r md:px-1">
+                  <Button asChild variant="ghost" size="sm">
+                    <Link href="/user">My images</Link>
+                  </Button>
+                </div>
                 <UserButton />
               </div>
             </SignedIn>
