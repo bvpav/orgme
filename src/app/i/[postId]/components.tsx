@@ -182,7 +182,7 @@ export const PostForm: React.FC<{
             <ImageRectangle
               url={post.imageUrl}
               alt={getPostTitle(post.title)}
-              menu={<ImageRectangleMenuTrigger post={post} />}
+              menu={<ImageRectangleMenuTrigger />}
             />
           </ImageDropdownMenuRoot>
           {isAuthor && (

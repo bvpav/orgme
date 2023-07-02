@@ -49,7 +49,7 @@ export const PostGrid: React.FC<{
                 url={post.imageUrl}
                 zoomable={false}
                 alt={getPostTitle(post.title)}
-                menu={<ImageRectangleMenuTrigger post={post} />}
+                menu={<ImageRectangleMenuTrigger />}
               />
               <h1
                 className={cn("mt-2 text-2xl font-semibold", {

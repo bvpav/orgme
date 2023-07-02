@@ -131,11 +131,14 @@ export const DeleteImageDialog: React.FC<
   );
 };
 
-export const ImageRectangleMenuTrigger: React.FC<{
-  post: Post;
-}> = ({ post }) => {
+export const ImageRectangleMenuTrigger: React.FC<
+  Exclude<DropdownMenuTriggerProps, "className">
+> = (props) => {
   return (
-    <DropdownMenuTrigger className="absolute right-0 top-0 mr-3 mt-3 grid aspect-square place-items-center rounded bg-black/30 text-2xl transition-transform active:scale-95">
+    <DropdownMenuTrigger
+      className="absolute right-0 top-0 mr-3 mt-3 grid aspect-square place-items-center rounded bg-black/30 text-2xl transition-transform active:scale-95"
+      {...props}
+    >
       <TbDots />
     </DropdownMenuTrigger>
   );
