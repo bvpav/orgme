@@ -36,7 +36,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        variables: {
+          colorPrimary: "#059669",
+          colorText: "#151515",
+          fontFamily: inter.style.fontFamily,
+        },
+      }}
+    >
       <html lang="en">
         <body
           className={clsx(
