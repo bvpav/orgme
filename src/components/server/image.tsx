@@ -1,6 +1,6 @@
 import { User } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { getPostTitle } from "~/utils/post";
+import { ellipsisText, getPostTitle } from "~/utils/post";
 import { cn } from "~/utils/ui";
 import {
   ImageDropdownMenuRoot,
@@ -52,7 +52,7 @@ export const PostGrid: React.FC<{
                 menu={<ImageRectangleMenuTrigger post={post} />}
               />
               <h1
-                className={cn("text-2xl font-semibold", {
+                className={cn("mt-2 text-2xl font-semibold", {
                   "opacity-50": !isHidden(post) && !post.title,
                   "opacity-20 transition-colors group-hover:opacity-50":
                     isHidden(post) && !post.title,
@@ -60,7 +60,7 @@ export const PostGrid: React.FC<{
                     isHidden(post) && post.title,
                 })}
               >
-                {getPostTitle(post.title)}
+                {ellipsisText(getPostTitle(post.title), 18)}
               </h1>
             </Link>
           </ImageDropdownMenuRoot>
