@@ -44,6 +44,8 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useToast } from "./ui/use-toast";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import { DialogTriggerProps } from "@radix-ui/react-dialog";
 
 type Post = {
   id: string;
@@ -139,6 +141,26 @@ export const ImageRectangleMenu: React.FC<{
   );
 };
 
+const ImageFullScreenDialog: React.FC<
+  {
+    url: string;
+    alt: string;
+    enabled: boolean;
+    children: React.ReactNode;
+  } & DialogTriggerProps
+> = ({ enabled, url, alt, children, ...props }) => {
+  return enabled ? (
+    <Dialog>
+      <DialogTrigger {...props}>{children}</DialogTrigger>
+      <DialogContent className="max-w-4xl rounded-none border-none bg-transparent p-0">
+        <img src={url} alt={alt} className="w-full" />
+      </DialogContent>
+    </Dialog>
+  ) : (
+    children
+  );
+};
+
 export const ImageRectangle: React.FC<{
   url: string;
   zoomable?: boolean;
@@ -146,17 +168,19 @@ export const ImageRectangle: React.FC<{
   menu?: React.ReactNode;
 }> = ({ url, zoomable = true, alt, menu }) => {
   return (
-    <div className="relative flex h-full min-h-[350px] w-full items-center overflow-clip rounded-t-md bg-black/30 object-cover">
-      <img src={url} alt={alt} className="w-full" />
-      <div
-        className={clsx(
-          "group absolute top-0 h-full w-full bg-gradient-to-b from-black/60 via-transparent to-transparent opacity-0 transition-opacity hover:opacity-100",
-          zoomable ? "cursor-zoom-in" : "cursor-pointer"
-        )}
-      >
-        {menu}
+    <ImageFullScreenDialog url={url} alt={alt} enabled={zoomable} asChild>
+      <div className="relative flex h-full min-h-[350px] w-full items-center overflow-clip rounded-t-md bg-black/30 object-cover">
+        <img src={url} alt={alt} className="w-full" />
+        <div
+          className={clsx(
+            "group absolute top-0 h-full w-full bg-gradient-to-b from-black/60 via-transparent to-transparent opacity-0 transition-opacity hover:opacity-100",
+            zoomable ? "cursor-zoom-in" : "cursor-pointer"
+          )}
+        >
+          {menu}
+        </div>
       </div>
-    </div>
+    </ImageFullScreenDialog>
   );
 };
 
