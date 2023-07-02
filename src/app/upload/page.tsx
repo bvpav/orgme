@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <main className="grid w-screen place-content-center">
       {file === null ? (
-        <section className="mt-16 flex w-full max-w-md flex-col items-center justify-between rounded-md bg-white p-10 text-center text-black shadow-sm sm:p-24">
+        <section className="mt-16 flex w-full max-w-md flex-col items-center rounded-md bg-white p-10 text-center text-black shadow-sm sm:p-24">
           <UploadDropzone
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
