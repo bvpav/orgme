@@ -9,11 +9,17 @@ import {
 import clsx from "clsx";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import { TbUpload } from "react-icons/tb";
+import { TbDots, TbUpload } from "react-icons/tb";
 import "@uploadthing/react/styles.css";
 import "./globals.css";
 import { Button } from "~/components/ui/button";
 import { Toaster } from "~/components/ui/toaster";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -64,7 +70,24 @@ export default function RootLayout({
             <SignedIn>
               <div className="flex items-center gap-2 md:gap-3">
                 <div className="border-white/10 md:border-r md:px-1">
-                  <Button asChild variant="ghost" size="sm">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="sm:hidden">
+                        <TbDots />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="min-w-0">
+                      <DropdownMenuItem asChild>
+                        <Link href="/user">My images</Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    size="sm"
+                    className="hidden sm:inline-flex"
+                  >
                     <Link href="/user">My images</Link>
                   </Button>
                 </div>
