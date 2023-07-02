@@ -69,7 +69,7 @@ export default function RootLayout({
 
             <SignedIn>
               <div className="flex items-center gap-2 md:gap-3">
-                <div className="border-white/10 md:border-r md:px-1">
+                <div className="border-white/10 sm:border-r sm:px-1">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" size="icon" className="sm:hidden">
