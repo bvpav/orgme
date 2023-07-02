@@ -88,7 +88,7 @@ export default function RootLayout({
             </SignedOut>
           </header>
           {children}
-          <footer className="mb-3 mt-7 grid place-items-center">
+          <footer className="mt-7 grid place-items-center pb-3">
             <p className="text-md font-light">
               This is an{" "}
               <Link
