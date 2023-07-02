@@ -1,18 +1,13 @@
-import Link from "next/link";
 import { clerkClient } from "@clerk/nextjs";
 import { and, eq } from "drizzle-orm";
+import { Metadata, ResolvingMetadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ImageRectangle, ImageRectangleMenu } from "~/components/image";
-import { UserLink } from "~/components/user";
+import { cache } from "react";
+import { PostGrid } from "~/components/server/image";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
-import { getPostTitle } from "~/utils/post";
 import { getClerkUserId, getUserDisplayName } from "~/utils/user";
-import Image from "next/image";
-import { Metadata, ResolvingMetadata } from "next";
-import { cache } from "react";
-import { cn } from "~/utils/ui";
-import { PostGrid } from "~/components/server/image";
 
 type Props = {
   params: { userId: string };

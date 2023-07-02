@@ -1,13 +1,9 @@
+import { clerkClient } from "@clerk/nextjs/api";
 import { desc, eq } from "drizzle-orm";
-import Link from "next/link";
+import invariant from "tiny-invariant";
+import { PostGrid } from "~/components/server/image";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
-import { clerkClient } from "@clerk/nextjs/api";
-import invariant from "tiny-invariant";
-import { UserLink } from "~/components/user";
-import { ImageRectangle, ImageRectangleMenu } from "~/components/image";
-import { getPostTitle } from "~/utils/post";
-import { PostGrid } from "~/components/server/image";
 
 export const dynamic = "force-dynamic";
 

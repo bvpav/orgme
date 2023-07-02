@@ -2,7 +2,12 @@ import { User } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { getPostTitle } from "~/utils/post";
 import { cn } from "~/utils/ui";
-import { ImageRectangle, ImageRectangleMenu, VisibilityText } from "../image";
+import {
+  ImageDropdownMenuRoot,
+  ImageRectangle,
+  ImageRectangleMenuTrigger,
+  VisibilityText,
+} from "../image";
 import { UserLink } from "../user";
 
 type Post = {
@@ -35,28 +40,30 @@ export const PostGrid: React.FC<{
             }
           )}
         >
-          <Link
-            href={`/i/${post.id}`}
-            className="flex w-full flex-col items-center gap-1 text-center"
-          >
-            <ImageRectangle
-              url={post.imageUrl}
-              zoomable={false}
-              alt={getPostTitle(post.title)}
-              menu={<ImageRectangleMenu post={post} />}
-            />
-            <h1
-              className={cn("text-2xl font-semibold", {
-                "opacity-50": !isHidden(post) && !post.title,
-                "opacity-20 transition-colors group-hover:opacity-50":
-                  isHidden(post) && !post.title,
-                "opacity-70 transition-colors group-hover:opacity-100":
-                  isHidden(post) && post.title,
-              })}
+          <ImageDropdownMenuRoot post={post}>
+            <Link
+              href={`/i/${post.id}`}
+              className="flex w-full flex-col items-center gap-1 text-center"
             >
-              {getPostTitle(post.title)}
-            </h1>
-          </Link>
+              <ImageRectangle
+                url={post.imageUrl}
+                zoomable={false}
+                alt={getPostTitle(post.title)}
+                menu={<ImageRectangleMenuTrigger post={post} />}
+              />
+              <h1
+                className={cn("text-2xl font-semibold", {
+                  "opacity-50": !isHidden(post) && !post.title,
+                  "opacity-20 transition-colors group-hover:opacity-50":
+                    isHidden(post) && !post.title,
+                  "opacity-70 transition-colors group-hover:opacity-100":
+                    isHidden(post) && post.title,
+                })}
+              >
+                {getPostTitle(post.title)}
+              </h1>
+            </Link>
+          </ImageDropdownMenuRoot>
           {showVisibility && (
             <div
               className={cn("text-xs font-semibold", {

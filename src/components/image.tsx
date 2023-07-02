@@ -2,7 +2,11 @@
 
 import { useUser } from "@clerk/nextjs";
 import { AlertDialogTriggerProps } from "@radix-ui/react-alert-dialog";
-import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu";
+import { DialogTriggerProps } from "@radix-ui/react-dialog";
+import {
+  DropdownMenuProps,
+  DropdownMenuTriggerProps,
+} from "@radix-ui/react-dropdown-menu";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, {
@@ -36,6 +40,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,8 +49,6 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useToast } from "./ui/use-toast";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
-import { DialogTriggerProps } from "@radix-ui/react-dialog";
 
 type Post = {
   id: string;
@@ -56,7 +59,7 @@ type Post = {
   // imageFK: never;
 };
 
-const DeleteImageContent: React.FC<{
+const DeleteImageDialogContent: React.FC<{
   post: Post;
 }> = ({ post }) => {
   const router = useRouter();
@@ -123,21 +126,18 @@ export const DeleteImageDialog: React.FC<
   return (
     <AlertDialog>
       <AlertDialogTrigger {...props} />
-      <DeleteImageContent post={post} />
+      <DeleteImageDialogContent post={post} />
     </AlertDialog>
   );
 };
 
-export const ImageRectangleMenu: React.FC<{
+export const ImageRectangleMenuTrigger: React.FC<{
   post: Post;
 }> = ({ post }) => {
   return (
-    <ImageDropdownMenu
-      post={post}
-      className="absolute right-0 top-0 mr-3 mt-3 grid aspect-square place-items-center rounded bg-black/30 text-2xl transition-transform active:scale-95"
-    >
+    <DropdownMenuTrigger className="absolute right-0 top-0 mr-3 mt-3 grid aspect-square place-items-center rounded bg-black/30 text-2xl transition-transform active:scale-95">
       <TbDots />
-    </ImageDropdownMenu>
+    </DropdownMenuTrigger>
   );
 };
 
@@ -274,6 +274,52 @@ const DownloadImageMenuItem: React.FC<{
   );
 };
 
+export const ImageDropdownMenuContent: React.FC<{
+  post: Post;
+}> = ({ post }) => {
+  const { user } = useUser();
+  const isOwner = user && user.id === post.authorId;
+
+  return (
+    <DropdownMenuContent>
+      <CopyLinkMenuItem postId={post.id} />
+      <DownloadImageMenuItem post={post} />
+
+      <DropdownMenuSeparator />
+      {isOwner ? (
+        <AlertDialogTrigger asChild>
+          <DropdownMenuItem className="gap-2 text-red-600 focus:text-red-700">
+            <TbTrash /> Delete
+          </DropdownMenuItem>
+        </AlertDialogTrigger>
+      ) : (
+        <DropdownMenuItem disabled className="gap-2">
+          <TbFlag /> Report
+        </DropdownMenuItem>
+      )}
+    </DropdownMenuContent>
+  );
+};
+
+export const ImageDropdownMenuRoot: React.FC<
+  PropsWithChildren<
+    {
+      post: Post;
+    } & DropdownMenuProps
+  >
+> = ({ children, post, ...props }) => {
+  return (
+    <AlertDialog>
+      <DropdownMenu {...props}>
+        {children}
+        <ImageDropdownMenuContent post={post} />
+      </DropdownMenu>
+
+      <DeleteImageDialogContent post={post} />
+    </AlertDialog>
+  );
+};
+
 export const ImageDropdownMenu: React.FC<
   PropsWithChildren<
     {
@@ -281,35 +327,10 @@ export const ImageDropdownMenu: React.FC<
     } & DropdownMenuTriggerProps
   >
 > = ({ children, post, ...props }) => {
-  const { user } = useUser();
-  const isOwner = user && user.id === post.authorId;
-
   return (
-    <AlertDialog>
-      <DropdownMenu modal={true}>
-        <DropdownMenuTrigger {...props}>{children}</DropdownMenuTrigger>
-
-        <DropdownMenuContent>
-          <CopyLinkMenuItem postId={post.id} />
-          <DownloadImageMenuItem post={post} />
-
-          <DropdownMenuSeparator />
-          {isOwner ? (
-            <AlertDialogTrigger asChild>
-              <DropdownMenuItem className="gap-2 text-red-600 focus:text-red-700">
-                <TbTrash /> Delete
-              </DropdownMenuItem>
-            </AlertDialogTrigger>
-          ) : (
-            <DropdownMenuItem disabled className="gap-2">
-              <TbFlag /> Report
-            </DropdownMenuItem>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      <DeleteImageContent post={post} />
-    </AlertDialog>
+    <ImageDropdownMenuRoot post={post} modal>
+      <DropdownMenuTrigger {...props}>{children}</DropdownMenuTrigger>
+    </ImageDropdownMenuRoot>
   );
 };
 

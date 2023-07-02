@@ -5,28 +5,27 @@ import {
   DeleteImageDialog,
   ImageDescriptionInput,
   ImageDropdownMenu,
+  ImageDropdownMenuRoot,
   ImageRectangle,
-  ImageRectangleMenu,
+  ImageRectangleMenuTrigger,
   VisibilityText,
 } from "~/components/image";
 import { getPostTitle } from "~/utils/post";
-import { deletePost, updatePost } from "./actions";
+import { updatePost } from "./actions";
 // TODO: manage to format this away w/ prettier
-import { TbDots, TbEyeOff, TbLock, TbPencil, TbWorld } from "react-icons/tb";
-import { formatDate } from "../../../utils/chrono";
-import React, { HTMLProps, useLayoutEffect, useRef, useState } from "react";
-import { title } from "process";
+import { Direction } from "@radix-ui/react-select";
 import clsx from "clsx";
+import React, { HTMLProps, useLayoutEffect, useRef, useState } from "react";
+import { TbDots, TbEyeOff, TbLock, TbPencil, TbWorld } from "react-icons/tb";
 import { Button } from "~/components/ui/button";
 import {
   Select,
+  SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectContent,
 } from "~/components/ui/select";
-import { Eye, Globe } from "lucide-react";
-import { Direction } from "@radix-ui/react-select";
+import { formatDate } from "../../../utils/chrono";
 
 type Post = Pick<
   InferModel<typeof import("~/db/schema").posts>,
@@ -178,11 +177,13 @@ export const PostForm: React.FC<{
           <VisibilityText visibility={post.visibility} />
         </p>
         <div className="my-4 overflow-clip rounded-md">
-          <ImageRectangle
-            url={post.imageUrl}
-            alt={getPostTitle(post.title)}
-            menu={<ImageRectangleMenu post={post} />}
-          />
+          <ImageDropdownMenuRoot post={post}>
+            <ImageRectangle
+              url={post.imageUrl}
+              alt={getPostTitle(post.title)}
+              menu={<ImageRectangleMenuTrigger post={post} />}
+            />
+          </ImageDropdownMenuRoot>
           {isAuthor && (
             <ImageDescriptionInput
               name="description"

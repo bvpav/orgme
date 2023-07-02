@@ -1,13 +1,10 @@
 import { clerkClient } from "@clerk/nextjs";
 import { desc, eq } from "drizzle-orm";
-import { redirect, usePathname } from "next/navigation";
-import { ImageRectangle, ImageRectangleMenu } from "~/components/image";
+import { redirect } from "next/navigation";
 import { PostGrid } from "~/components/server/image";
-import { UserLink } from "~/components/user";
 import { db } from "~/db";
 import { posts } from "~/db/schema";
 import { actuallyWorkingAuth } from "~/utils/hacks";
-import { getPostTitle } from "~/utils/post";
 
 export const metadata = {
   title: "OrgMe - Your images",
