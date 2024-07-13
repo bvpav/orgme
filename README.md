@@ -2,7 +2,7 @@
 
 **OrgMe** is my interview task, applying for an IT position in the organizer team of the 10th anniversary edition of [HackTUES](https://hacktues.bg) and [TUES Fest](https://tuesfest.bg) 2024, the open doors day event of the [Technological School "Electronic Systems" of the Technical University, Sofia](https://elsys-bg.org).
 
-The assignment is to create a clone of [Imgur](https://imgur.com). OrgMe is available at <https://plsorg.me>.
+The assignment is to create a clone of [Imgur](https://imgur.com).
 
 ## Getting Started
 
